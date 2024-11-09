@@ -9,7 +9,6 @@ import ResetPassword from "../screens/auth/ResetPassword";
 import { useTheme } from "native-base";
 import { createStackNavigator } from "@react-navigation/stack";
 import FillProfile from "../screens/auth/FillProfile";
-
 const Stack = createStackNavigator<AuthStackParams>();
 
 const AuthStack = () => {

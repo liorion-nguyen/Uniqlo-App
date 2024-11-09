@@ -1,6 +1,6 @@
 import { Alert, StyleSheet, Text } from "react-native";
 import React, { useState } from "react";
-import { Avatar, Center, Column, Divider, Heading, IconButton, Row } from "native-base";
+import { Avatar, Box, Center, Column, Divider, Heading, IconButton, Row } from "native-base";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { StackScreenProps } from "@react-navigation/stack";
 import { HomeStackParams } from "../../../navigations/config";
@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from "../../../store";
 import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 import { removeLoading, setLoading } from "../../../store/loading.reducer";
 import LoadingOverlay from "../../../components/LoadingOverlay";
+import ListProduct from "./ListProduct";
 
 type Props = {} & StackScreenProps<HomeStackParams, "Home">;
 
@@ -39,7 +40,7 @@ const Home = ({ navigation }: Props) => {
       if (focused && refresh) loadData();
     }, [focused])
   );
-  
+
 
   React.useEffect(() => {
     const unsubscribe = navigation.addListener("blur", () => {
@@ -73,12 +74,15 @@ const Home = ({ navigation }: Props) => {
               name: "add",
               color: "#373737",
             }}
-            // onPress={() => navigation.navigate("WritePost")}
+          // onPress={() => navigation.navigate("WritePost")}
           />
         </Row>
       </Row>
       <Divider bg="coolGray.400" h={0.3} />
-      {isLoading ? <LoadingOverlay /> : <Text>Posts Data</Text>}
+      {isLoading ? <LoadingOverlay /> : <Box flex="1">
+        <Heading color="white" fontSize="xl" mb="4">Danh sách sản phẩm</Heading>
+        <ListProduct />
+      </Box>}
     </Column>
   );
 };
