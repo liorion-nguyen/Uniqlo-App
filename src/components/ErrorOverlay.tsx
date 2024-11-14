@@ -2,14 +2,20 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { AlertDialog, Button } from "native-base";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../store";
-import { removeError } from "../store/error.reducer";
+// import { RootState } from "../store";
+// import { removeError } from "../store/error.reducer";
 
 const ErrorOverlay = () => {
-  const error = useSelector((state: RootState) => state.error.error);
-  const dispatch = useDispatch();
+  // const error = useSelector((state: RootState) => state.error.error);
+  // const dispatch = useDispatch();
   const cancelRef = React.useRef(null);
-  const onClose = () => dispatch(removeError());
+  const onClose = () => {
+    // dispatch(removeError()
+  };
+  const error = {
+    title: 'Error',
+    message: 'This is an error message',
+  };
   return (
     <AlertDialog leastDestructiveRef={cancelRef} isOpen={!!error} onClose={onClose}>
       <AlertDialog.Content>

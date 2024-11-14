@@ -5,21 +5,25 @@ import { BottomTabsParams } from "../../navigations/config";
 import { Column } from "native-base";
 import NotificationList from "../../components/NotificationList/NotificationList";
 import { useFocusEffect } from "@react-navigation/native";
-import { useAppDispatch, useAppSelector } from "../../store";
-import { removeLoading, setLoading } from "../../store/loading.reducer";
+// import { useAppDispatch, useAppSelector } from "../../store";
+// import { removeLoading, setLoading } from "../../store/loading.reducer";
 import LoadingOverlay from "../../components/LoadingOverlay";
 import { INotification, getAllNoti } from "../../types/notification";
 import * as Notifications from "expo-notifications";
-import { setNoti } from "../../store/notification.reducer";
+// import { setNoti } from "../../store/notification.reducer";
 
 type Props = BottomTabScreenProps<BottomTabsParams, "Notification">;
 
 const Notification = ({ navigation }: Props) => {
   // const { colors } = useTheme();
-  const { isLoading } = useAppSelector((state) => state.loading);
-  const { user } = useAppSelector((state) => state.user);
+  // const { isLoading } = useAppSelector((state) => state.loading);
+  const isLoading = false;
+  const user = {
+    phone: '0909090909',
+  };
+  // const { user } = useAppSelector((state) => state.user);
 
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
   const [notifications, setNotifications] = useState<INotification[]>([]);
   const [loaded, setLoaded] = useState(false);
 
@@ -27,14 +31,14 @@ const Notification = ({ navigation }: Props) => {
     React.useCallback(() => {
       function loadData() {
         try {
-          dispatch(setLoading());
+          // dispatch(setLoading());
           const unsubcribe = getAllNoti(user!.phone, setNotifications);
           setLoaded(true);
-          return () => unsubcribe();
+          // return () => unsubcribe();
         } catch (err) {
           Alert.alert("Thông báo", (err as any).message);
         } finally {
-          dispatch(removeLoading());
+          // dispatch(removeLoading());
         }
       }
       loadData();
@@ -43,7 +47,7 @@ const Notification = ({ navigation }: Props) => {
 
   useEffect(() => {
     if (loaded) {
-      dispatch(setNoti());
+      // dispatch(setNoti());
     }
   }, [notifications, loaded]);
 

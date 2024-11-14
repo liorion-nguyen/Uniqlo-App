@@ -1,20 +1,21 @@
 import { Alert, Linking, StyleSheet } from "react-native";
 import React, { useState } from "react";
 import { Avatar, Button, Center, Column, Heading, Icon, IconButton } from "native-base";
-import { useAppDispatch, useAppSelector } from "../../store";
-import { removeUser, setUser } from "../../store/user.reducer";
+// import { useAppDispatch, useAppSelector } from "../../store";
+// import { removeUser, setUser } from "../../store/user.reducer";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import SettingButton from "../../components/SettingButton";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { BottomTabsParams, RootStackParams } from "../../navigations/config";
 import * as ImagePicker from "expo-image-picker";
-import { removeLoading, setLoading } from "../../store/loading.reducer";
+// import { removeLoading, setLoading } from "../../store/loading.reducer";
 import { uploadImage } from "../../utils/image";
 import { doc, updateDoc } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
 import LoadingOverlay from "../../components/LoadingOverlay";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
+import { dispatch } from "../../redux/store";
 
 // TODO: Fix Type of Props
 type Props = CompositeScreenProps<
@@ -23,9 +24,15 @@ type Props = CompositeScreenProps<
 >;
 
 const Setting = ({ navigation }: Props) => {
-  const { user } = useAppSelector((state) => state.user);
-  const { isLoading } = useAppSelector((state) => state.loading);
-  const dispatch = useAppDispatch();
+  // const { user } = useAppSelector((state) => state.user);
+  // const { isLoading } = useAppSelector((state) => state.loading);
+  // const dispatch = useAppDispatch();
+  const user = {
+    avatarUrl: 'https://example.com/avatar.jpg',
+    fullname: 'Nguyễn Văn A',
+    avatarName: 'avatar.jpg',
+  };
+  const isLoading = false;  
   const [image, setImage] = useState<string | null>(user?.avatarUrl || null);
 
   const pickImage = async () => {
@@ -38,18 +45,18 @@ const Setting = ({ navigation }: Props) => {
     if (!result.canceled) {
       try {
         const imageUri = result.assets[0].uri;
-        dispatch(setLoading());
+        // dispatch(setLoading());
         const { imageName, imageUrl } = await uploadImage(imageUri);
         if (user?.avatarName) {
           // Delete old image from storage
         }
         // Update image to storage
-        dispatch(setUser({ ...user!, avatarUrl: imageUrl, avatarName: imageName }));
+        // dispatch(setUser({ ...user!, avatarUrl: imageUrl, avatarName: imageName }));
         setImage(imageUrl);
       } catch (err) {
         Alert.alert("Thông báo", (err as any).message);
       } finally {
-        dispatch(removeLoading());
+        // dispatch(removeLoading());
       }
     }
   };
@@ -128,7 +135,7 @@ const Setting = ({ navigation }: Props) => {
           leftIcon={<Icon as={Ionicons} name="exit-outline" color="white" />}
           _text={{ color: "white", py: "0.5", fontWeight: "medium" }}
           onPress={() => {
-            dispatch(removeUser());
+            // dispatch(removeUser());
           }}
           rounded="full"
         >

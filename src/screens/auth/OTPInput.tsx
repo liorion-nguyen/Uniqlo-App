@@ -12,7 +12,7 @@ const OTPInput = ({ navigation, route }: Props) => {
   function onCodeFilled(code: string) {
     const { target } = route.params;
     if (target == "FillProfile") {
-      navigation.navigate("FillProfile");
+      // navigation.navigate("FillProfile");
     } else {
       navigation.navigate("ResetPassword")
     }

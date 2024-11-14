@@ -2,25 +2,25 @@ import { StyleSheet } from "react-native";
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import AuthStack from "./AuthStack";
-import TabNav from "./TabNav";
-import ErrorOverlay from "../components/ErrorOverlay";
-import { useAppSelector } from "../store";
-import FillProfile from "../screens/auth/FillProfile";
-import { useTheme } from "native-base";
+import TabNav from './TabNav';
+import ErrorOverlay from '../components/ErrorOverlay';
+import FillProfile from '../screens/auth/FillProfile';
+import { useTheme } from 'native-base';
 import { createStackNavigator } from "@react-navigation/stack";
 import ChangePassword from "../screens/main/ChangePassword";
 import { RootStackParams } from "./config";
 import ResponseForUs from "../screens/main/ResponseForUs";
+import { RootState } from "../redux/store";
 
 const Stack = createStackNavigator<RootStackParams>();
 
 const Root = () => {
   const { colors } = useTheme();
-  const { user } = useAppSelector((state) => state.user);
-
+  // const { user } = useAppSelector((state: RootState) => state.user);
+  const user = null;
   return (
     <>
-      <ErrorOverlay />
+      {/* <ErrorOverlay /> */}
 
       <NavigationContainer>
         <Stack.Navigator
@@ -35,7 +35,8 @@ const Root = () => {
           }}
         >
           {!user && <Stack.Screen name="Auth" component={AuthStack} />}
-          {user && <Stack.Screen name="TabNav" component={TabNav} />}
+          {/* {user && <Stack.Screen name="TabNav" component={TabNav} />} */}
+
           <Stack.Screen
             name="FillProfile"
             component={FillProfile}
