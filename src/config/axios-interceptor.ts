@@ -1,15 +1,16 @@
 import axios from 'axios';
-import { envConfig, localStorageConfig } from '../../config';
+import { envConfig } from '../../config';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const ACCESS_TOKEN = localStorageConfig.accessToken;
-const REFRESH_TOKEN = localStorageConfig.refreshToken;
+const ACCESS_TOKEN = 'accessToken';
+const REFRESH_TOKEN = 'refreshToken';
 const TIMEOUT = 1 * 60 * 1000;
 axios.defaults.timeout = TIMEOUT;
 axios.defaults.baseURL = envConfig.serverURL;
 
 const setupAxiosInterceptors = (onUnauthenticated: any) => {
   const onRequestSuccess = async (config: any) => {
-    const token = localStorage.getItem(ACCESS_TOKEN);
+    const token = await AsyncStorage.getItem(ACCESS_TOKEN);
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -21,27 +22,25 @@ const setupAxiosInterceptors = (onUnauthenticated: any) => {
   const onResponseError = async (err: any) => {
     if (err) {
       let status = null;
-      if (err.status) {
-        status = err.status || err.response.status;
-      } else if (err.response != null) {
+      if (err.response) {
         status = err.response.status;
       }
 
       if (status === 403 || status === 401) {
         try {
-          const refreshToken = localStorage.getItem(REFRESH_TOKEN);
+          const refreshToken = await AsyncStorage.getItem(REFRESH_TOKEN);
 
           const newAccessToken = await axios.post(`${envConfig.serverURL}/auth/refresh-token`, {
             refreshToken,
           });
 
-          localStorage.setItem(ACCESS_TOKEN, newAccessToken.data.accessToken);
+          await AsyncStorage.setItem(ACCESS_TOKEN, newAccessToken.data.accessToken);
           const originalRequest = err.config;
-          originalRequest.headers.Authorization = `Bearer ${newAccessToken.data.data.accessToken}`;
+          originalRequest.headers.Authorization = `Bearer ${newAccessToken.data.accessToken}`;
           return axios(originalRequest);
         } catch (error) {
-          localStorage.removeItem(ACCESS_TOKEN);
-          localStorage.removeItem(REFRESH_TOKEN);
+          await AsyncStorage.removeItem(ACCESS_TOKEN);
+          await AsyncStorage.removeItem(REFRESH_TOKEN);
           onUnauthenticated();
         }
       }

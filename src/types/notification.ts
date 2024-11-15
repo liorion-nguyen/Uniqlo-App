@@ -1,13 +1,3 @@
-import {
-  addDoc,
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  onSnapshot,
-  query,
-  where,
-} from "firebase/firestore";
 import { IUserProfile } from "./user";
 import moment from "moment";
 

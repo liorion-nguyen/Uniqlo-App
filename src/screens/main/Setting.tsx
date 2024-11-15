@@ -10,8 +10,6 @@ import { BottomTabsParams, RootStackParams } from "../../navigations/config";
 import * as ImagePicker from "expo-image-picker";
 // import { removeLoading, setLoading } from "../../store/loading.reducer";
 import { uploadImage } from "../../utils/image";
-import { doc, updateDoc } from "firebase/firestore";
-import { deleteObject, ref } from "firebase/storage";
 import LoadingOverlay from "../../components/LoadingOverlay";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";

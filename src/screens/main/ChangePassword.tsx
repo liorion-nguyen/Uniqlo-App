@@ -10,7 +10,6 @@ import { RootStackParams } from "../../navigations/config";
 // import { removeLoading, setLoading } from "../../store/loading.reducer";
 import { changePasswordSchema, onInputChange } from "../../utils/form";
 import { ValidationError } from "yup";
-import { doc, updateDoc } from "firebase/firestore";
 
 type Props = StackScreenProps<RootStackParams, "ChangePassword">;
 

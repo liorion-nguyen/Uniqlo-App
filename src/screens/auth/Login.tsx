@@ -8,7 +8,6 @@ import { Button, Center, Column, FormControl, Row, Text } from "native-base";
 import FormInput from "../../components/Form/FormInput";
 import AuthBg from "../../components/AuthBg";
 import FormButton from "../../components/Form/FormButton";
-import { doc, getDoc } from "firebase/firestore";
 import { IUserProfile } from "../../types/user";
 import LoadingOverlay from "../../components/LoadingOverlay";
 

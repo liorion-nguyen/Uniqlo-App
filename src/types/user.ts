@@ -1,5 +1,3 @@
-import { collection, getDoc, getDocs, query, where } from "firebase/firestore";
-
 export enum EGender {
   M,
   F,

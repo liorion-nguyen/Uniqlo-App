@@ -92,11 +92,10 @@ export const register = (registerData: RegisterRequestType) => {
                 0,
                 registerData.phone.country.length - registerData.phone.number.length
             );
-
-            console.log('registerData', registerData);
             dispatch(authenticationSlice.actions.registerRequest());
-            const result = await axios.post(`http://128.199.116.4:8200/auth/register`, registerData);
-            console.log('result', result);
+
+            // const result = await axios.post(`${envConfig.serverURL}/auth/register`, registerData);
+            console.log('envConfig', envConfig.serverURL);
             dispatch(authenticationSlice.actions.registerSuccess());
             toast.show({
                 text1: 'Registration saved! Please check your email for confirmation.',
