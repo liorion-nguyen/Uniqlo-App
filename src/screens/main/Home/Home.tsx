@@ -4,9 +4,9 @@ import { Avatar, Box, Center, Column, Divider, Heading, IconButton, Row } from "
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { StackScreenProps } from "@react-navigation/stack";
 import { HomeStackParams } from "../../../navigations/config";
-import { useAppDispatch, useAppSelector } from "../../../store";
+// import { useAppDispatch, useAppSelector } from "../../../store";
 import { useFocusEffect, useIsFocused } from "@react-navigation/native";
-import { removeLoading, setLoading } from "../../../store/loading.reducer";
+// import { removeLoading, setLoading } from "../../../store/loading.reducer";
 import LoadingOverlay from "../../../components/LoadingOverlay";
 import ListProduct from "./ListProduct";
 
@@ -19,9 +19,14 @@ const iconBtnProps = {
   size: "sm",
 };
 const Home = ({ navigation }: Props) => {
-  const { user } = useAppSelector((state) => state.user);
-  const { isLoading } = useAppSelector((state) => state.loading);
-  const dispatch = useAppDispatch();
+  // const { user } = useAppSelector((state) => state.user);
+  // const { isLoading } = useAppSelector((state) => state.loading);
+  // const dispatch = useAppDispatch();
+  const isLoading = false;
+  const user = {
+    avatarUrl: 'https://example.com/avatar.jpg',
+    fullname: 'Nguyễn Văn A',
+  };
   const [refresh, setRefresh] = useState(true);
   const focused = useIsFocused();
 
@@ -29,12 +34,12 @@ const Home = ({ navigation }: Props) => {
     React.useCallback(() => {
       async function loadData() {
         try {
-          dispatch(setLoading());
+          // dispatch(setLoading());
           // Get all Data
         } catch (err) {
           Alert.alert("Thông báo", (err as any).message);
         } finally {
-          dispatch(removeLoading());
+          // dispatch(removeLoading());
         }
       }
       if (focused && refresh) loadData();

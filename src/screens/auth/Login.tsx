@@ -2,13 +2,12 @@ import { StyleSheet } from "react-native";
 import React, { useState } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AuthStackParams } from "../../navigations/config";
-import { useAppDispatch } from "../../store";
-import { setUser } from "../../store/user.reducer";
+// import { useAppDispatch } from "../../store";
+// import { setUser } from "../../store/user.reducer";
 import { Button, Center, Column, FormControl, Row, Text } from "native-base";
 import FormInput from "../../components/Form/FormInput";
 import AuthBg from "../../components/AuthBg";
 import FormButton from "../../components/Form/FormButton";
-import { doc, getDoc } from "firebase/firestore";
 import { IUserProfile } from "../../types/user";
 import LoadingOverlay from "../../components/LoadingOverlay";
 
@@ -18,7 +17,7 @@ const Login = ({ navigation }: Props) => {
   const [phone, setPhone] = useState("0708200334");
   const [password, setPassword] = useState("Chugg203");
 
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -34,10 +33,10 @@ const Login = ({ navigation }: Props) => {
     try {
       setLoading(true);
       // Handle Login
-      dispatch(setUser({
-        phone,
-        password, 
-      } as IUserProfile));
+      // dispatch(setUser({
+      //   phone,
+      //   password, 
+      //  } as IUserProfile));
     } catch (err) {
       console.error(err)
       setError("Lỗi hệ thống hoặc mạng");

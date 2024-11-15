@@ -10,21 +10,21 @@ import { Column, Divider, Heading, Row, Text } from "native-base";
 import FormInput from "../../components/Form/FormInput";
 import FormButton from "../../components/Form/FormButton";
 import GenderSelect from "../../components/Form/GenderSelect";
-import { useAppDispatch, useAppSelector } from "../../store";
-import { setUser } from "../../store/user.reducer";
-import { StackScreenProps } from "@react-navigation/stack";
-import { RootStackParams } from "../../navigations/config";
-import { EGender, EUserRole } from "../../types/user";
-import { fillProfileSchema, onInputChange } from "../../utils/form";
-import FormDatePicker from "../../components/Form/FormDatePicker";
-import LoadingOverlay from "../../components/LoadingOverlay";
-import { removeLoading, setLoading } from "../../store/loading.reducer";
-import { ValidationError } from "yup";
-import { doc, setDoc, updateDoc } from "firebase/firestore";
-import moment from "moment";
-import Ionicons from "@expo/vector-icons/Ionicons";
+// import { useAppDispatch, useAppSelector } from '../../redux/store';
+// import { setUser } from '../../redux/slices/user';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParams } from '../../navigations/config';
+import { EGender, EUserRole } from '../../types/user';
+import { fillProfileSchema, onInputChange } from '../../utils/form';
+import FormDatePicker from '../../components/Form/FormDatePicker';
+import LoadingOverlay from '../../components/LoadingOverlay';
+// import { removeLoading, setLoading } from '../../redux/slices/loading';
+import { ValidationError } from 'yup';
+import moment from 'moment';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { dispatch } from "../../redux/store";
 
-type Props = {} & StackScreenProps<RootStackParams, "FillProfile">;
+type Props = {} & StackScreenProps<RootStackParams, 'FillProfile'>;
 
 type ProfileForm = {
   fullname: string;
@@ -34,54 +34,61 @@ type ProfileForm = {
 };
 
 const FillProfile = ({ navigation, route }: Props) => {
-  const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state) => state.user);
+  // const dispatch = useAppDispatch();
+  // const { user } = useAppSelector((state) => state.user);
+  const user = {
+    fullname: 'Nguyễn Văn A', 
+    birthday: '2024-01-01',
+    gender: EGender.M,
+    email: 'example@gmail.com',
+  };
   const editMode = !!user;
-  const { isLoading } = useAppSelector((state) => state.loading);
-  const title = editMode ? "Cập nhật thông tin" : "Điền thông tin";
+  // const { isLoading } = useAppSelector((state) => state.loading);
+  const isLoading = false;
+  const title = editMode ? 'Cập nhật thông tin' : 'Điền thông tin';
 
   const [formData, setFormData] = useState<ProfileForm>({
-    fullname: editMode ? user.fullname : "",
+    fullname: editMode ? user.fullname : '',
     birthday: editMode ? new Date(user.birthday) : new Date(),
     gender: editMode ? user.gender : EGender.M,
-    email: editMode ? user.email : "",
+    email: editMode ? user.email : '',
   });
 
   async function onSignUp() {
     const { password, phone } = route.params!;
-    dispatch(setLoading());
+    // dispatch(setLoading());
     try {
       await fillProfileSchema.validate(formData);
       if (moment(new Date()).diff(formData.birthday, "y") < 16) {
         throw Error("Bạn chưa đủ tuổi dùng ứng dụng");
       }
       // Handle Change Password
-      dispatch(setUser({
-        phone,
-        password,
-        ...formData,
-        role: EUserRole.Member,
-        birthday: formData.birthday.toISOString(),
-      }));
-      navigation.navigate("TabNav");
+      // dispatch(setUser({
+      //   phone,
+      //   password,
+      //   ...formData,
+      //   role: EUserRole.Member,
+      //   birthday: formData.birthday.toISOString(),
+      // }));
+      navigation.navigate('TabNav');
     } catch (err) {
       const { message } = err as ValidationError;
       Alert.alert("Thông báo", message);
     } finally {
-      dispatch(removeLoading());
+      // dispatch(removeLoading());
     }
   }
 
   async function onUpdateProflie() {
     try {
-      dispatch(setLoading());
+      // dispatch(setLoading());
       // handle update profile
-      Alert.alert("Thông báo", "Cập nhật thông tin thành công");
+      Alert.alert('Thông báo', 'Cập nhật thông tin thành công');
     } catch (err) {
       const { message } = err as ValidationError;
       Alert.alert("Thông báo", message);
     } finally {
-      dispatch(removeLoading());
+      // dispatch(removeLoading());
     }
   }
 

@@ -6,11 +6,10 @@ import FormButton from "../../components/Form/FormButton";
 import { Alert } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
 import { RootStackParams } from "../../navigations/config";
-import { useAppDispatch, useAppSelector } from "../../store";
-import { removeLoading, setLoading } from "../../store/loading.reducer";
+// import { useAppDispatch, useAppSelector } from "../../store";
+// import { removeLoading, setLoading } from "../../store/loading.reducer";
 import { changePasswordSchema, onInputChange } from "../../utils/form";
 import { ValidationError } from "yup";
-import { doc, updateDoc } from "firebase/firestore";
 
 type Props = StackScreenProps<RootStackParams, "ChangePassword">;
 
@@ -21,9 +20,12 @@ type ChangePasswordForm = {
 };
 
 const ChangePassword = ({ navigation }: Props) => {
-  const { user } = useAppSelector((state) => state.user);
+  // const { user } = useAppSelector((state) => state.user);
+  const user = {
+    password: '123456',
+  };
 
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
   const [formData, setFormData] = useState<ChangePasswordForm>({
     password: "",
     newPassword: "",
@@ -32,7 +34,7 @@ const ChangePassword = ({ navigation }: Props) => {
 
   async function onUpdatePassword() {
     try {
-      dispatch(setLoading());
+      // dispatch(setLoading());
       await changePasswordSchema.validate(formData);
       if (formData.password !== user!.password) throw Error("Nhập sai mật khẩu hiện tại");
       if (formData.newPassword !== formData.reNewPassword)
@@ -43,7 +45,7 @@ const ChangePassword = ({ navigation }: Props) => {
       const { message } = err as ValidationError;
       Alert.alert("Thông báo", message);
     } finally {
-      dispatch(removeLoading());
+      // dispatch(removeLoading());
     }
   }
 

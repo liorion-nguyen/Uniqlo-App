@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 import React from "react";
 import { Column, Divider } from "native-base";
 import SearchBar from "../../components/Form/SearchBar";
-import MessageList from "../../components/MessageList/MessageList";
+// import MessageList from "../../components/MessageList/MessageList";
 
 const Chat = () => {
   return (
@@ -12,7 +12,7 @@ const Chat = () => {
       </Column>
       <Divider mt="6" bg="coolGray.500" />
       <Column flex="1" px="4">
-        <MessageList />
+        {/* <MessageList /> */}
       </Column>
     </Column>
   );
