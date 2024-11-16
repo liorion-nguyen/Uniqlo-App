@@ -6,8 +6,10 @@ import appTheme from './src/theme';
 import { Provider } from 'react-redux';
 import { store } from './src/redux/store';
 import { StatusBar } from 'expo-status-bar';
+import setupAxiosInterceptors from './src/config/axiosConfig';
 
 export default function App() {
+  setupAxiosInterceptors(() => {});
   return (
     <NativeBaseProvider theme={appTheme}>
       <Provider store={store}>

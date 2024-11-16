@@ -1,15 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { useAppDispatch } from '../store';
 import {
     AuthenticationState,
     LoginRequestType,
     LoginResponseType,
     RegisterRequestType,
 } from '../../types/redux/authentication';
-import { envConfig, localStorageConfig } from '../../../config';
+import { envConfig } from '../../../config';
 import toast from 'react-native-toast-message';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getUser, userSlice } from './user';
 
 type RegisterFailureAction = PayloadAction<string>;
 type LoginFailureAction = PayloadAction<string>;
@@ -93,9 +94,7 @@ export const register = (registerData: RegisterRequestType) => {
                 registerData.phone.country.length - registerData.phone.number.length
             );
             dispatch(authenticationSlice.actions.registerRequest());
-
-            // const result = await axios.post(`${envConfig.serverURL}/auth/register`, registerData);
-            console.log('envConfig', envConfig.serverURL);
+            const result = await axios.post(`${envConfig.serverURL}/auth/register`, registerData);
             dispatch(authenticationSlice.actions.registerSuccess());
             toast.show({
                 text1: 'Registration saved! Please check your email for confirmation.',
@@ -120,12 +119,11 @@ export const login = (loginData: LoginRequestType) => {
             dispatch(authenticationSlice.actions.loginRequest());
             const result = await axios.post(`${envConfig.serverURL}/auth/login`, loginData);
             const data: LoginResponseType = result.data ? result.data.data : null;
-
             if (data) {
-                localStorage.setItem(localStorageConfig.accessToken, data.access_token);
-                localStorage.setItem(localStorageConfig.refreshToken, data?.refresh_token || '');
+                await AsyncStorage.setItem("accessToken", data.access_token);
+                await AsyncStorage.setItem("refreshToken", data?.refresh_token || '');
+                await dispatch(getUser());
             }
-
             dispatch(authenticationSlice.actions.loginSuccess());
         } catch (error: any) {
             const errorMessage: string = error.response
@@ -145,10 +143,11 @@ export const logout = () => {
         dispatch(authenticationSlice.actions.logout());
 
         await axios.post(`${envConfig.serverURL}/auth/logout`, {
-            refresh_token: localStorage.getItem(localStorageConfig.refreshToken),
+            refresh_token: await AsyncStorage.getItem("refreshToken"),
         });
-        localStorage.removeItem(localStorageConfig.accessToken);
-        localStorage.removeItem(localStorageConfig.refreshToken);
+        await AsyncStorage.removeItem("accessToken");
+        await AsyncStorage.removeItem("refreshToken");
+        dispatch(userSlice.actions.logout());
     };
 };
 
@@ -156,6 +155,7 @@ export const forgotPassword = () => {
     return async (dispatch: any) => {
         try {
             dispatch(authenticationSlice.actions.forgotPasswordRequest());
+            
             dispatch(authenticationSlice.actions.forgotPasswordSuccess());
             toast.show({
                 text1: 'New password has been sent to your email',

@@ -10,12 +10,32 @@ import AuthBg from "../../components/AuthBg";
 import FormButton from "../../components/Form/FormButton";
 import { IUserProfile } from "../../types/user";
 import LoadingOverlay from "../../components/LoadingOverlay";
-
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { login } from "../../redux/slices/authentication";
+import { dispatch, RootState, useSelector } from "../../redux/store";
 type Props = {} & NativeStackScreenProps<AuthStackParams, "Login">;
+const validationSchema = Yup.object({
+  email: Yup.string()
+    .email('Must be a valid email')
+    .max(255, 'Email must be at most 255 characters')
+    .required('Email is required'),
+  password: Yup.string()
+    .min(7, 'Password must be at least 7 characters')
+    .max(255, 'Password must be at most 255 characters')
+    .required('Password is required'),
+});
 
 const Login = ({ navigation }: Props) => {
-  const [phone, setPhone] = useState("0708200334");
-  const [password, setPassword] = useState("Chugg203");
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+    },
+    validationSchema,
+    onSubmit: async (values) => {
+    },
+  });
 
   // const dispatch = useAppDispatch();
   const [error, setError] = useState<string | null>(null);
@@ -32,11 +52,7 @@ const Login = ({ navigation }: Props) => {
   async function onLoggedIn() {
     try {
       setLoading(true);
-      // Handle Login
-      // dispatch(setUser({
-      //   phone,
-      //   password, 
-      //  } as IUserProfile));
+      await dispatch(login(formik.values));
     } catch (err) {
       console.error(err)
       setError("Lỗi hệ thống hoặc mạng");
@@ -52,16 +68,16 @@ const Login = ({ navigation }: Props) => {
         <Column space="5">
           <FormControl>
             <FormInput
-              onChangeText={setPhone}
-              value={phone}
-              label="Số điện thoại"
-              keyboardType="phone-pad"
+              onChangeText={formik.handleChange('email')}
+              value={formik.values.email}
+              label="Email"
+              keyboardType="email-address"
             />
           </FormControl>
           <FormControl>
             <FormInput
-              onChangeText={setPassword}
-              value={password}
+              onChangeText={formik.handleChange('password')}
+              value={formik.values.password}
               label="Mật khẩu"
               type="password"
             />

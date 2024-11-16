@@ -9,11 +9,13 @@ import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { BottomTabsParams, RootStackParams } from "../../navigations/config";
 import * as ImagePicker from "expo-image-picker";
 // import { removeLoading, setLoading } from "../../store/loading.reducer";
-import { uploadImage } from "../../utils/image";
 import LoadingOverlay from "../../components/LoadingOverlay";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
-import { dispatch } from "../../redux/store";
+import { dispatch, RootState, useSelector } from "../../redux/store";
+import { uploadImage } from "../../utils/image";
+import { logout } from "../../redux/slices/authentication";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // TODO: Fix Type of Props
 type Props = CompositeScreenProps<
@@ -22,16 +24,11 @@ type Props = CompositeScreenProps<
 >;
 
 const Setting = ({ navigation }: Props) => {
-  // const { user } = useAppSelector((state) => state.user);
+  const { user } = useSelector((state: RootState) => state.user);
   // const { isLoading } = useAppSelector((state) => state.loading);
   // const dispatch = useAppDispatch();
-  const user = {
-    avatarUrl: 'https://example.com/avatar.jpg',
-    fullname: 'Nguyễn Văn A',
-    avatarName: 'avatar.jpg',
-  };
   const isLoading = false;  
-  const [image, setImage] = useState<string | null>(user?.avatarUrl || null);
+  const [image, setImage] = useState<string | null>(user?.avatar || null);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -45,7 +42,7 @@ const Setting = ({ navigation }: Props) => {
         const imageUri = result.assets[0].uri;
         // dispatch(setLoading());
         const { imageName, imageUrl } = await uploadImage(imageUri);
-        if (user?.avatarName) {
+          if (user?.avatar) {
           // Delete old image from storage
         }
         // Update image to storage
@@ -104,7 +101,7 @@ const Setting = ({ navigation }: Props) => {
             />
           </Column>
           <Heading color="white" mt="4">
-            {user?.fullname}
+            {user?.fullName}
           </Heading>
         </Center>
         <Column flex="1" space="6" mt="16">
@@ -132,8 +129,8 @@ const Setting = ({ navigation }: Props) => {
           mb="6"
           leftIcon={<Icon as={Ionicons} name="exit-outline" color="white" />}
           _text={{ color: "white", py: "0.5", fontWeight: "medium" }}
-          onPress={() => {
-            // dispatch(removeUser());
+          onPress={async () => {
+            await dispatch(logout());
           }}
           rounded="full"
         >

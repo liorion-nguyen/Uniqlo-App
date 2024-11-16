@@ -7,9 +7,10 @@ import { useTheme } from "native-base";
 import HomeStack from "./HomeStack";
 import { BottomTabsParams } from "./config";
 import Setting from "../screens/main/Setting";
-import * as Notifications from "expo-notifications";
-import { useAppDispatch, useAppSelector } from "../store";
-import { removeNoti } from "../store/notification.reducer";
+  import * as Notifications from "expo-notifications";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 
 const Tab = createBottomTabNavigator<BottomTabsParams>();
 
@@ -25,9 +26,8 @@ Notifications.setNotificationHandler({
 
 const TabNav = () => {
   const { colors } = useTheme();
-  const { isNoti } = useAppSelector((state: any) => state.noti);
 
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch();
   function scheduleNotificationHandler() {
     Notifications.scheduleNotificationAsync({
       content: {
@@ -57,13 +57,6 @@ const TabNav = () => {
       subcribe2.remove();
     };
   }, []);
-
-  useEffect(() => {
-    if (isNoti) {
-      scheduleNotificationHandler();
-      dispatch(removeNoti());
-    }
-  }, [isNoti]);
 
   return (
     <Tab.Navigator

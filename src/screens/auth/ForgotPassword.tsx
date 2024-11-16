@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import AuthBg from "../../components/AuthBg";
 import { Center, Column, FormControl, Heading, Stack, Text } from "native-base";
 import FormInput from "../../components/Form/FormInput";
@@ -10,6 +10,16 @@ import { AuthStackParams } from "../../navigations/config";
 type Props = {} & NativeStackScreenProps<AuthStackParams, "ForgotPassword">;
 
 const ForgotPassword = ({ navigation }: Props) => {
+  const [email, setEmail] = useState('');
+  const handleForgotPassword = () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
+    if (emailRegex.test(email)) {
+      // await 
+      navigation.navigate("OTPInput", { target: "ResetPassword" });
+    } else {
+      alert("Vui lòng nhập địa chỉ email hợp lệ.");
+    }
+  };
   return (
     <AuthBg>
       <Stack space="6">
@@ -17,13 +27,13 @@ const ForgotPassword = ({ navigation }: Props) => {
           <Heading color="primary.600" fontSize="xl" mb="2">
             Quên mật khẩu
           </Heading>
-          <Text color="coolGray.300">Nhập số điện thoại để đặt lại mật khẩu</Text>
+          <Text color="coolGray.300">Nhập email để đặt lại mật khẩu</Text>
         </Center>
         <Column space="6">
           <FormControl>
-            <FormInput label="Số điện thoại" />
+            <FormInput label="Email" value={email} onChangeText={setEmail} />
           </FormControl>
-          <FormButton onPress={() => navigation.navigate("OTPInput", { target: "ResetPassword" })}>
+          <FormButton onPress={handleForgotPassword}>
             Tiếp tục
           </FormButton>
           <FormButton onPress={() => navigation.goBack()}>

@@ -2,9 +2,13 @@ import { StyleSheet } from "react-native";
 import React, { useState } from "react";
 import { Button, Column, FormControl, IButtonProps, Icon, Row, Text } from "native-base";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { EGender } from "../../types/user";
 
 type GenderButtonProps = { active?: boolean; iconName: string } & IButtonProps;
+
+export enum EGender {
+  M,
+  F,
+}
 
 const GenderButton = ({ active, iconName, children, ...buttonProps }: GenderButtonProps) => (
   <Button
