@@ -14,7 +14,6 @@ import GenderSelect from "../../components/Form/GenderSelect";
 // import { setUser } from '../../redux/slices/user';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParams } from '../../navigations/config';
-import { EGender, EUserRole } from '../../types/user';
 import { fillProfileSchema, onInputChange } from '../../utils/form';
 import FormDatePicker from '../../components/Form/FormDatePicker';
 import LoadingOverlay from '../../components/LoadingOverlay';
@@ -26,10 +25,12 @@ import { dispatch } from "../../redux/store";
 
 type Props = {} & StackScreenProps<RootStackParams, 'FillProfile'>;
 
+type EGender = 'Male' | 'Female';
+
 type ProfileForm = {
   fullname: string;
   birthday: Date;
-  gender: EGender;
+  gender: string;
   email: string;
 };
 
@@ -39,7 +40,7 @@ const FillProfile = ({ navigation, route }: Props) => {
   const user = {
     fullname: 'Nguyễn Văn A', 
     birthday: '2024-01-01',
-    gender: EGender.M,
+    gender: 'Male',
     email: 'example@gmail.com',
   };
   const editMode = !!user;
@@ -50,7 +51,7 @@ const FillProfile = ({ navigation, route }: Props) => {
   const [formData, setFormData] = useState<ProfileForm>({
     fullname: editMode ? user.fullname : '',
     birthday: editMode ? new Date(user.birthday) : new Date(),
-    gender: editMode ? user.gender : EGender.M,
+    gender: editMode ? user.gender : 'Male',
     email: editMode ? user.email : '',
   });
 

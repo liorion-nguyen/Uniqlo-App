@@ -9,6 +9,8 @@ import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 // import { removeLoading, setLoading } from "../../../store/loading.reducer";
 import LoadingOverlay from "../../../components/LoadingOverlay";
 import ListProduct from "./ListProduct";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/store";
 
 type Props = {} & StackScreenProps<HomeStackParams, "Home">;
 
@@ -19,14 +21,12 @@ const iconBtnProps = {
   size: "sm",
 };
 const Home = ({ navigation }: Props) => {
-  // const { user } = useAppSelector((state) => state.user);
+  const { user } = useSelector((state: RootState) => state.user);  
+  console.log('user', user);
+   
   // const { isLoading } = useAppSelector((state) => state.loading);
   // const dispatch = useAppDispatch();
   const isLoading = false;
-  const user = {
-    avatarUrl: 'https://example.com/avatar.jpg',
-    fullname: 'Nguyễn Văn A',
-  };
   const [refresh, setRefresh] = useState(true);
   const focused = useIsFocused();
 
@@ -59,8 +59,8 @@ const Home = ({ navigation }: Props) => {
   return (
     <Column flex="1" bg="coolGray.700" safeAreaTop>
       <Row alignItems="center" space="3" px="4" mb="4" mt="1">
-        {user?.avatarUrl ? (
-          <Avatar size="md" source={{ uri: user?.avatarUrl }} />
+        {user?.avatar ? (
+          <Avatar size="md" source={{ uri: user?.avatar }} />
         ) : (
           <Center bg="white" rounded="full" w="12" h="12">
             <Ionicons name="person-outline" color="gray" size={24} />
@@ -68,7 +68,7 @@ const Home = ({ navigation }: Props) => {
         )}
         <Row flex="1">
           <Heading color="white" fontSize="xl">
-            {user?.fullname}
+            {user?.fullName}
           </Heading>
         </Row>
         <Row space="2">

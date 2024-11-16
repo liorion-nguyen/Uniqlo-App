@@ -4,12 +4,40 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { Avatar, Center, Column, Heading, Icon, Row, Text } from "native-base";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { INotification } from "../../types/notification";
-import { EUserRole, IUserProfile } from "../../types/user";
 import moment from "moment";
 
 type Props = {
   data: INotification;
 };
+
+export enum EGender {
+  M,
+  F,
+}
+
+export enum EUserRole {
+  Doctor,
+  Member,
+}
+
+interface IUserProfile {
+  phone: string;
+  password: string;
+  birthday: string;
+  fullname: string;
+  gender: EGender;
+  email: string;
+  role: EUserRole;
+  avatarUrl?: string;
+  avatarName?: string;
+
+  // For Doctor
+  degree?: string;
+  position?: string;
+  intro?: string[];
+  expertises?: string[];
+  services?: string[];
+}
 
 const NotificationItem = ({ data }: Props) => {
   const fromUser = data.fromUser as IUserProfile;

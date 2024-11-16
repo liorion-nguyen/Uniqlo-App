@@ -2,41 +2,28 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import AuthBg from "../../components/AuthBg";
 import { Button, Center, Column, Heading, Text } from "native-base";
-import OTPInputView from "@twotalltotems/react-native-otp-input";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AuthStackParams } from "../../navigations/config";
+import FormButton from "../../components/Form/FormButton";
 
 type Props = {} & NativeStackScreenProps<AuthStackParams, "OTPInput">;
 
 const OTPInput = ({ navigation, route }: Props) => {
-  function onCodeFilled(code: string) {
-    const { target } = route.params;
-    if (target == "FillProfile") {
-      // navigation.navigate("FillProfile");
-    } else {
-      navigation.navigate("ResetPassword")
-    }
-  }
-
+  
   return (
     <AuthBg>
       <Column flex="1">
-        <Center>
+        <Center mb="6">
           <Heading color="primary.600" fontSize="lg" mb="2">
-            Mã xác thực OTP đã được gửi tới
+            Mã xác thực OTP đã được gửi tới email
           </Heading>
           <Heading color="primary.600" fontSize="lg">
-            SĐT 0345xxx467
+            Bạn hãy kiểm tra hộp thư
           </Heading>
         </Center>
-        <OTPInputView
-          pinCount={6}
-          autoFocusOnLoad
-          codeInputFieldStyle={styles.underlineStyleBase}
-          codeInputHighlightStyle={styles.underlineStyleHighLighted}
-          style={styles.otpView}
-          onCodeFilled={onCodeFilled}
-        />
+        <FormButton onPress={() => navigation.navigate("Login")}>
+          Return to login
+        </FormButton>
       </Column>
     </AuthBg>
   );
