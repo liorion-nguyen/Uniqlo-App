@@ -99,6 +99,8 @@ export const register = (registerData: RegisterRequestType) => {
             toast.show({
                 text1: 'Registration saved! Please check your email for confirmation.',
                 type: 'success',
+                position: 'bottom',
+                visibilityTime: 3000,
             });
         } catch (error: any) {
             const errorMessage: string = error.response
@@ -107,6 +109,8 @@ export const register = (registerData: RegisterRequestType) => {
             toast.show({
                 text1: errorMessage,
                 type: 'error',
+                position: 'bottom',
+                visibilityTime: 3000,
             });
             dispatch(authenticationSlice.actions.registerFailure(errorMessage));
         }
@@ -125,13 +129,21 @@ export const login = (loginData: LoginRequestType) => {
                 await dispatch(getUser());
             }
             dispatch(authenticationSlice.actions.loginSuccess());
+            toast.show({
+                text1: 'Đăng nhập thành công',
+                type: 'success',
+                position: 'bottom',
+                visibilityTime: 3000,
+            });
         } catch (error: any) {
             const errorMessage: string = error.response
                 ? error.response.data.message
                 : 'Something went wrong';
             toast.show({
-                text1: 'Invalid email or password',
+                text1: errorMessage,
                 type: 'error',
+                position: 'bottom',
+                visibilityTime: 3000,
             });
             dispatch(authenticationSlice.actions.loginFailure(errorMessage));
         }
@@ -148,6 +160,12 @@ export const logout = () => {
         await AsyncStorage.removeItem("accessToken");
         await AsyncStorage.removeItem("refreshToken");
         dispatch(userSlice.actions.logout());
+        toast.show({
+            text1: 'Đăng xuất thành công',
+            type: 'success',
+            position: 'bottom',
+            visibilityTime: 3000,
+        });
     };
 };
 
@@ -160,6 +178,8 @@ export const forgotPassword = () => {
             toast.show({
                 text1: 'New password has been sent to your email',
                 type: 'success',
+                position: 'bottom',
+                visibilityTime: 3000,
             });
             dispatch(handleOpenDialog('login'));
         } catch (error: any) {
@@ -169,6 +189,8 @@ export const forgotPassword = () => {
             toast.show({
                 text1: errorMessage,
                 type: 'error',
+                position: 'bottom',
+                visibilityTime: 3000,
             });
             dispatch(authenticationSlice.actions.forgotPasswordFailure(errorMessage));
         }

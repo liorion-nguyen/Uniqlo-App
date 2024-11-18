@@ -4,17 +4,17 @@ import { Avatar, Button, Center, Column, Heading, Icon, IconButton } from "nativ
 // import { useAppDispatch, useAppSelector } from "../../store";
 // import { removeUser, setUser } from "../../store/user.reducer";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import SettingButton from "../../components/SettingButton";
+import SettingButton from "../../../components/SettingButton";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
-import { BottomTabsParams, RootStackParams } from "../../navigations/config";
+import { BottomTabsParams, RootStackParams } from "../../../navigations/config";
 import * as ImagePicker from "expo-image-picker";
 // import { removeLoading, setLoading } from "../../store/loading.reducer";
-import LoadingOverlay from "../../components/LoadingOverlay";
+import LoadingOverlay from "../../../components/LoadingOverlay";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
-import { dispatch, RootState, useSelector } from "../../redux/store";
-import { uploadImage } from "../../utils/image";
-import { logout } from "../../redux/slices/authentication";
+import { dispatch, RootState, useSelector } from "../../../redux/store";
+import { uploadImage } from "../../../utils/image";
+import { logout } from "../../../redux/slices/authentication";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // TODO: Fix Type of Props
