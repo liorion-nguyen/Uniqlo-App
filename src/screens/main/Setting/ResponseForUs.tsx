@@ -2,9 +2,9 @@ import { Alert, StyleSheet } from "react-native";
 import React, { useLayoutEffect } from "react";
 import { Column } from "native-base";
 import { StackScreenProps } from "@react-navigation/stack";
-import { RootStackParams } from "../../navigations/config";
-import FormInput from "../../components/Form/FormInput";
-import FormButton from "../../components/Form/FormButton";
+import { RootStackParams } from "../../../navigations/config";
+import FormInput from "../../../components/Form/FormInput";
+import FormButton from "../../../components/Form/FormButton";
 
 type Props = StackScreenProps<RootStackParams, "ResponseForUs">;
 

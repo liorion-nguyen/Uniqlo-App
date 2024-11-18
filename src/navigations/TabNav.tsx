@@ -1,12 +1,12 @@
 import { StyleSheet } from "react-native";
 import React, { useEffect } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Notification from "../screens/main/Notification";
+import Notification from "../screens/main/Setting/Notification";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useTheme } from "native-base";
 import HomeStack from "./HomeStack";
 import { BottomTabsParams } from "./config";
-import Setting from "../screens/main/Setting";
+import Setting from "../screens/main/Setting/Setting";
   import * as Notifications from "expo-notifications";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";

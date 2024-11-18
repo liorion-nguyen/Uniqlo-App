@@ -17,15 +17,12 @@ import { RootStackParams } from '../../navigations/config';
 import { fillProfileSchema, onInputChange } from '../../utils/form';
 import FormDatePicker from '../../components/Form/FormDatePicker';
 import LoadingOverlay from '../../components/LoadingOverlay';
-// import { removeLoading, setLoading } from '../../redux/slices/loading';
 import { ValidationError } from 'yup';
 import moment from 'moment';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { dispatch } from "../../redux/store";
+import { RootState, useSelector } from "../../redux/store";
 
 type Props = {} & StackScreenProps<RootStackParams, 'FillProfile'>;
-
-type EGender = 'Male' | 'Female';
 
 type ProfileForm = {
   fullname: string;
@@ -36,21 +33,16 @@ type ProfileForm = {
 
 const FillProfile = ({ navigation, route }: Props) => {
   // const dispatch = useAppDispatch();
-  // const { user } = useAppSelector((state) => state.user);
-  const user = {
-    fullname: 'Nguyễn Văn A', 
-    birthday: '2024-01-01',
-    gender: 'Male',
-    email: 'example@gmail.com',
-  };
+  const { user } = useSelector((state: RootState) => state.user);
+  console.log(user);
   const editMode = !!user;
   // const { isLoading } = useAppSelector((state) => state.loading);
   const isLoading = false;
   const title = editMode ? 'Cập nhật thông tin' : 'Điền thông tin';
 
   const [formData, setFormData] = useState<ProfileForm>({
-    fullname: editMode ? user.fullname : '',
-    birthday: editMode ? new Date(user.birthday) : new Date(),
+    fullname: editMode ? user.fullName : '',
+    birthday: editMode && user.dateOfBirth ? new Date(user.dateOfBirth) : new Date(),
     gender: editMode ? user.gender : 'Male',
     email: editMode ? user.email : '',
   });

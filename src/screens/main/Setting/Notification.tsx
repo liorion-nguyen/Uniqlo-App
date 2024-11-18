@@ -1,14 +1,14 @@
 import { Alert, StyleSheet } from "react-native";
 import React, { useEffect, useState } from "react";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
-import { BottomTabsParams } from "../../navigations/config";
+import { BottomTabsParams } from "../../../navigations/config";
 import { Column } from "native-base";
-import NotificationList from "../../components/NotificationList/NotificationList";
+import NotificationList from "../../../components/NotificationList/NotificationList";
 import { useFocusEffect } from "@react-navigation/native";
 // import { useAppDispatch, useAppSelector } from "../../store";
 // import { removeLoading, setLoading } from "../../store/loading.reducer";
-import LoadingOverlay from "../../components/LoadingOverlay";
-import { INotification, getAllNoti } from "../../types/notification";
+import LoadingOverlay from "../../../components/LoadingOverlay";
+import { INotification, getAllNoti } from "../../../types/notification";
 import * as Notifications from "expo-notifications";
 // import { setNoti } from "../../store/notification.reducer";
 

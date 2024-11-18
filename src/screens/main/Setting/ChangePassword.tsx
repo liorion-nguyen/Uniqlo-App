@@ -1,14 +1,14 @@
 import { Keyboard, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import React, { useState } from "react";
 import { Column } from "native-base";
-import FormInput from "../../components/Form/FormInput";
-import FormButton from "../../components/Form/FormButton";
+import FormInput from "../../../components/Form/FormInput";
+import FormButton from "../../../components/Form/FormButton";
 import { Alert } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
-import { RootStackParams } from "../../navigations/config";
+import { RootStackParams } from "../../../navigations/config";
 // import { useAppDispatch, useAppSelector } from "../../store";
 // import { removeLoading, setLoading } from "../../store/loading.reducer";
-import { changePasswordSchema, onInputChange } from "../../utils/form";
+import { changePasswordSchema, onInputChange } from "../../../utils/form";
 import { ValidationError } from "yup";
 
 type Props = StackScreenProps<RootStackParams, "ChangePassword">;
