@@ -1,93 +1,38 @@
-import { Alert, StyleSheet, Text } from "react-native";
-import React, { useState } from "react";
-import { Avatar, Box, Center, Column, Divider, Heading, IconButton, Row } from "native-base";
-import Ionicons from "@expo/vector-icons/Ionicons";
+import { StyleSheet } from "react-native";
+import React, { useEffect } from "react";
+import { Column, ScrollView } from "native-base";
 import { StackScreenProps } from "@react-navigation/stack";
 import { HomeStackParams } from "../../../navigations/config";
-// import { useAppDispatch, useAppSelector } from "../../../store";
-import { useFocusEffect, useIsFocused } from "@react-navigation/native";
-// import { removeLoading, setLoading } from "../../../store/loading.reducer";
-import LoadingOverlay from "../../../components/LoadingOverlay";
-import ListProduct from "./ListProduct";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../redux/store";
-
+import Header from "../../../components/Main/Home/header";
+import Slider from "../../../components/Common/slider";
+import Category from "../../../components/Main/Home/category";
+import { dispatch } from "../../../redux/store";
+import { getCategory } from "../../../redux/slices/category";
+import FlashSale from "../../../components/Main/Home/flashSalse";
+import { getProduct } from "../../../redux/slices/product";
 type Props = {} & StackScreenProps<HomeStackParams, "Home">;
 
-const iconBtnProps = {
-  variant: "solid",
-  rounded: "full",
-  bg: "white",
-  size: "sm",
-};
 const Home = ({ navigation }: Props) => {
-  const { user } = useSelector((state: RootState) => state.user);  
-  console.log('user', user);
-   
-  // const { isLoading } = useAppSelector((state) => state.loading);
-  // const dispatch = useAppDispatch();
-  const isLoading = false;
-  const [refresh, setRefresh] = useState(true);
-  const focused = useIsFocused();
-
-  useFocusEffect(
-    React.useCallback(() => {
-      async function loadData() {
-        try {
-          // dispatch(setLoading());
-          // Get all Data
-        } catch (err) {
-          Alert.alert("Thông báo", (err as any).message);
-        } finally {
-          // dispatch(removeLoading());
-        }
-      }
-      if (focused && refresh) loadData();
-    }, [focused])
-  );
-
-
-  React.useEffect(() => {
-    const unsubscribe = navigation.addListener("blur", () => {
-      // Do something when the screen blurs
-      setRefresh(true);
-    });
-
-    return unsubscribe;
-  }, [navigation]);
-
+  const data = [
+    { title: 'Slide 1', image: 'https://via.placeholder.com/300' },
+    { title: 'Slide 2', image: 'https://via.placeholder.com/300' },
+    { title: 'Slide 3', image: 'https://via.placeholder.com/300' },
+  ];  
+  useEffect(() => {
+    const fetchCategory = async () => {
+      await dispatch(getCategory());
+      await dispatch(getProduct());
+    };
+    fetchCategory();
+  }, []);
   return (
-    <Column flex="1" bg="coolGray.700" safeAreaTop>
-      <Row alignItems="center" space="3" px="4" mb="4" mt="1">
-        {user?.avatar ? (
-          <Avatar size="md" source={{ uri: user?.avatar }} />
-        ) : (
-          <Center bg="white" rounded="full" w="12" h="12">
-            <Ionicons name="person-outline" color="gray" size={24} />
-          </Center>
-        )}
-        <Row flex="1">
-          <Heading color="white" fontSize="xl">
-            {user?.fullName}
-          </Heading>
-        </Row>
-        <Row space="2">
-          <IconButton
-            {...iconBtnProps}
-            _icon={{
-              as: Ionicons,
-              name: "add",
-              color: "#373737",
-            }}
-          // onPress={() => navigation.navigate("WritePost")}
-          />
-        </Row>
-      </Row>
-      <Divider bg="coolGray.400" h={0.3} />
-      {isLoading ? <LoadingOverlay /> : <Box flex="1">
-        <Heading color="white" fontSize="xl" mb="4">Danh sách sản phẩm</Heading>
-        <ListProduct />
-      </Box>}
+    <Column flex="1" bg="coolGray.700" safeAreaTop style={{ padding: 20 }}>
+      <ScrollView flexGrow={1} style={{ flexDirection: "column", gap: 20 }}>
+        <Header />
+        <Slider data={data} />
+        <Category />
+        <FlashSale />
+      </ScrollView>
     </Column>
   );
 };

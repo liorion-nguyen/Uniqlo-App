@@ -3,7 +3,6 @@ import React, { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import AuthStack from "./AuthStack";
 import TabNav from './TabNav';
-import ErrorOverlay from '../components/ErrorOverlay';
 import FillProfile from '../screens/auth/FillProfile';
 import { useTheme } from 'native-base';
 import { createStackNavigator } from "@react-navigation/stack";
@@ -19,6 +18,9 @@ const Stack = createStackNavigator<RootStackParams>();
 const Root = () => {
   const { colors } = useTheme();
   const { user } = useSelector((state: RootState) => state.user);
+  useEffect(() => {
+    dispatch(getUser());
+  }, []);
   return (
     <NavigationContainer>
       <Stack.Navigator
