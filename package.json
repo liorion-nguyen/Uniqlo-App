@@ -38,6 +38,7 @@
     "react-native-dotenv": "^3.4.11",
     "react-native-gesture-handler": "~2.9.0",
     "react-native-modal-datetime-picker": "^17.1.0",
+    "react-native-otp-entry": "^1.7.3",
     "react-native-pager-view": "6.1.2",
     "react-native-paper": "^5.12.5",
     "react-native-phone-number-input": "^2.1.0",

@@ -9,7 +9,7 @@ import Category from "../../../components/Main/Home/category";
 import { dispatch } from "../../../redux/store";
 import { getCategory } from "../../../redux/slices/category";
 import FlashSale from "../../../components/Main/Home/flashSalse";
-import { getProduct } from "../../../redux/slices/product";
+import { getProducts } from "../../../redux/slices/product";
 type Props = {} & StackScreenProps<HomeStackParams, "Home">;
 
 const Home = ({ navigation }: Props) => {
@@ -21,7 +21,7 @@ const Home = ({ navigation }: Props) => {
   useEffect(() => {
     const fetchCategory = async () => {
       await dispatch(getCategory());
-      await dispatch(getProduct());
+      await dispatch(getProducts());
     };
     fetchCategory();
   }, []);

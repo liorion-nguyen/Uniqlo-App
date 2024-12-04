@@ -6,16 +6,18 @@ import FormInput from "../../components/Form/FormInput";
 import FormButton from "../../components/Form/FormButton";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AuthStackParams } from "../../navigations/config";
+import { forgotPassword } from "../../redux/slices/authentication";
+import { dispatch } from "../../redux/store";
 
 type Props = {} & NativeStackScreenProps<AuthStackParams, "ForgotPassword">;
 
 const ForgotPassword = ({ navigation }: Props) => {
   const [email, setEmail] = useState('');
-  const handleForgotPassword = () => {
+  const handleForgotPassword = async () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
     if (emailRegex.test(email)) {
-      // await 
-      navigation.navigate("OTPInput", { target: "ResetPassword" });
+      await dispatch(forgotPassword(email));
+      navigation.navigate("OTPInput", { email });
     } else {
       alert("Vui lòng nhập địa chỉ email hợp lệ.");
     }

@@ -10,7 +10,6 @@ import ChangePassword from "../screens/main/Setting/ChangePassword";
 import { RootStackParams } from "./config";
 import ResponseForUs from "../screens/main/Setting/ResponseForUs";
 import { dispatch, RootState, useSelector } from "../redux/store";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getUser } from "../redux/slices/user";
 
 const Stack = createStackNavigator<RootStackParams>();

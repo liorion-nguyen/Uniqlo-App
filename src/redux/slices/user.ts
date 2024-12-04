@@ -6,7 +6,6 @@ import toast from 'react-native-toast-message';
 import { Response } from '../../types/redux/response';
 import { UserState, UserType } from '../../types/redux/user';
 import { envConfig } from '../../../config';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type GetUserSuccessdAction = PayloadAction<UserType | null>;
 type GetUserFailureAction = PayloadAction<string>;
@@ -49,9 +48,7 @@ export const getUser = () => {
   return async (dispatch: any) => {
     try {
       dispatch(userSlice.actions.getUserRequest());
-      const accessToken = await AsyncStorage.getItem('accessToken');
       const result: AxiosResponse<Response<UserType>> = await axios.get(`${envConfig.serverURL}/users`);
-      console.log('result', result);
       dispatch(userSlice.actions.getUserSuccess(result.data.data ? result.data.data : null));
     } catch (error: any) {
       const errorMessage = error.response ? error.response.data.message : 'Something went wrong';
@@ -64,16 +61,21 @@ export const getUser = () => {
   };
 };
 
-export const updatePassword = (id: string, oldPassword: string, newPassword: string) => {
+export const updateUser = (id: string, user: UserType) => {
   return async (dispatch: any) => {
     try {
       toast.show({
-        text1: 'Updating password...',
-        type: 'loading',
+        text1: 'Cập nhật thông tin thành công!',
+        type: 'success',
       });
       dispatch(userSlice.actions.getUserRequest());
-      await axios.put(`${envConfig.serverURL}/users/change-password/${id}`, { oldPassword, newPassword });
-      dispatch(userSlice.actions.updatePasswordSuccess());
+      const { password, ...userData } = user;
+      const result: AxiosResponse<Response<UserType>> = await axios.put(`${envConfig.serverURL}/users/${id}`, userData);
+      dispatch(userSlice.actions.updateUserSuccess(result.data.data ? result.data.data : null));
+      toast.show({
+        text1: 'Cập nhật thông tin thành công!',
+        type: 'success',
+      });
     } catch (error: any) {
       const errorMessage = error.response ? error.response.data.message : 'Something went wrong';
       toast.show({
@@ -85,23 +87,25 @@ export const updatePassword = (id: string, oldPassword: string, newPassword: str
   }
 }
 
-export const updateUser = (id: string, user: UserType) => {
+export const changePassword = (oldPassword: string, newPassword: string) => {
   return async (dispatch: any) => {
     try {
-      toast.show({
-        text1: 'Updating user...',
-        type: 'loading',
-      });
       dispatch(userSlice.actions.getUserRequest());
-      const result: AxiosResponse<Response<UserType>> = await axios.put(`${envConfig.serverURL}/users/${id}`, user);
-      dispatch(userSlice.actions.updateUserSuccess(result.data.data ? result.data.data : null));
+      await axios.post(`${envConfig.serverURL}/users/change-password`, { oldPassword, newPassword });
+      toast.show({
+        text1: 'Đổi mật khẩu thành công!',
+        type: 'success',
+      });
+      dispatch(userSlice.actions.updatePasswordSuccess());
+      return true;
     } catch (error: any) {
-      const errorMessage = error.response ? error.response.data.message : 'Something went wrong';
+      const errorMessage = error.response ? error.response.data.message : 'Có lỗi xảy ra!';
       toast.show({
         text1: errorMessage,
         type: 'error',
       });
       dispatch(userSlice.actions.getUserFailure(errorMessage));
+      return false;
     }
   }
 }

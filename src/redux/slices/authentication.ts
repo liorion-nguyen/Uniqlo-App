@@ -15,7 +15,6 @@ import { getUser, userSlice } from './user';
 type RegisterFailureAction = PayloadAction<string>;
 type LoginFailureAction = PayloadAction<string>;
 type ForgotPasswordFailureAction = PayloadAction<string>;
-type ResetPasswordFailureAction = PayloadAction<string>;
 
 const initialState: AuthenticationState = {
     loading: false,
@@ -69,17 +68,6 @@ export const authenticationSlice = createSlice({
             state.loading = false;
             state.errorMessage = action.payload;
         },
-        // RESET PASSWORD
-        resetPasswordRequest: (state: AuthenticationState) => {
-            state.loading = true;
-        },
-        resetPasswordSuccess: (state: AuthenticationState) => {
-            state.loading = false;
-        },
-        resetPasswordFailure: (state: AuthenticationState, action: ResetPasswordFailureAction) => {
-            state.loading = false;
-            state.errorMessage = action.payload;
-        },
         setDiaLog: (state: AuthenticationState, action: PayloadAction<string>) => {
             state.open = action.payload;
         },
@@ -121,6 +109,8 @@ export const login = (loginData: LoginRequestType) => {
     return async (dispatch: any) => {
         try {
             dispatch(authenticationSlice.actions.loginRequest());
+            console.log(envConfig.serverURL);
+            
             const result = await axios.post(`${envConfig.serverURL}/auth/login`, loginData);
             const data: LoginResponseType = result.data ? result.data.data : null;
             if (data) {
@@ -169,19 +159,18 @@ export const logout = () => {
     };
 };
 
-export const forgotPassword = () => {
+export const forgotPassword = (email: string) => {
     return async (dispatch: any) => {
         try {
             dispatch(authenticationSlice.actions.forgotPasswordRequest());
-            
+            await axios.post(`${envConfig.serverURL}/auth/forgot-password`, { email });
             dispatch(authenticationSlice.actions.forgotPasswordSuccess());
             toast.show({
-                text1: 'New password has been sent to your email',
+                text1: 'Code has been sent to your email',
                 type: 'success',
                 position: 'bottom',
                 visibilityTime: 3000,
             });
-            dispatch(handleOpenDialog('login'));
         } catch (error: any) {
             const errorMessage: string = error.response
                 ? error.response.data.message
@@ -197,18 +186,20 @@ export const forgotPassword = () => {
     };
 };
 
-export const resetPassword = (key: string, newPassword: string) => {
+export const verifyCode = (verifyCodeRequest: { email: string, code: string }) => {
     return async (dispatch: any) => {
         try {
-            dispatch(authenticationSlice.actions.resetPasswordRequest());
-            await axios.post(`/auth/reset/reset-password/${key}`, {
-                password: newPassword,
-            });
-            dispatch(authenticationSlice.actions.resetPasswordSuccess());
+            dispatch(authenticationSlice.actions.forgotPasswordRequest());
+            await axios.post(`${envConfig.serverURL}/auth/verify-code`, verifyCodeRequest);
+            dispatch(authenticationSlice.actions.forgotPasswordSuccess());
             toast.show({
-                text1: 'Your password has been successfully updated!',
+                text1: 'New password has been sent to your email',
                 type: 'success',
+                position: 'bottom',
+                visibilityTime: 3000,
             });
+            dispatch(authenticationSlice.actions.setDiaLog('login'));
+            return true;
         } catch (error: any) {
             const errorMessage: string = error.response
                 ? error.response.data.message
@@ -216,8 +207,10 @@ export const resetPassword = (key: string, newPassword: string) => {
             toast.show({
                 text1: errorMessage,
                 type: 'error',
+                position: 'bottom',
+                visibilityTime: 3000,
             });
-            dispatch(authenticationSlice.actions.resetPasswordFailure(errorMessage));
+            dispatch(authenticationSlice.actions.forgotPasswordFailure(errorMessage));
         }
     };
 };

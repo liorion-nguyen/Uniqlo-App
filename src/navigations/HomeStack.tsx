@@ -3,6 +3,7 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { HomeStackParams } from "./config";
 import Home from "../screens/main/Home/Home";
+import ProductDetail from "../screens/main/Home/ProductDetail";
 
 const Stack = createStackNavigator<HomeStackParams>();
 
@@ -14,6 +15,7 @@ const HomeStack = () => {
       }}
     >
       <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="ProductDetail" component={ProductDetail} options={{ headerShown: true }} />
     </Stack.Navigator>
   );
 };

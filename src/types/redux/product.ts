@@ -1,6 +1,7 @@
 export type ProductState = {
     loading: boolean;
     products: ProductType[];
+    product: ProductType | null;
     errorMessage: string | null;
 };
 
