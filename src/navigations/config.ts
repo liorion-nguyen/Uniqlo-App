@@ -2,6 +2,7 @@ export type BottomTabsParams = {
   HomeStack: undefined;
   Setting: undefined;
   Notification: undefined;
+  Contact: undefined; 
 };
 
 export type AuthStackParams = {
@@ -9,9 +10,8 @@ export type AuthStackParams = {
   SignUp: undefined;
   ForgotPassword: undefined;
   OTPInput: {
-    target: "FillProfile" | "ResetPassword";
+    email: string;
   };
-  ResetPassword: undefined;
 };
 
 export type HomeStackParams = {

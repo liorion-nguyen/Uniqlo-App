@@ -6,10 +6,10 @@ import FormButton from "../../../components/Form/FormButton";
 import { Alert } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
 import { RootStackParams } from "../../../navigations/config";
-// import { useAppDispatch, useAppSelector } from "../../store";
-// import { removeLoading, setLoading } from "../../store/loading.reducer";
 import { changePasswordSchema, onInputChange } from "../../../utils/form";
 import { ValidationError } from "yup";
+import { dispatch, useAppSelector } from "../../../redux/store";
+import { changePassword } from "../../../redux/slices/user";
 
 type Props = StackScreenProps<RootStackParams, "ChangePassword">;
 
@@ -20,12 +20,8 @@ type ChangePasswordForm = {
 };
 
 const ChangePassword = ({ navigation }: Props) => {
-  // const { user } = useAppSelector((state) => state.user);
-  const user = {
-    password: '123456',
-  };
+  const { user } = useAppSelector((state) => state.user);
 
-  // const dispatch = useAppDispatch();
   const [formData, setFormData] = useState<ChangePasswordForm>({
     password: "",
     newPassword: "",
@@ -33,19 +29,9 @@ const ChangePassword = ({ navigation }: Props) => {
   });
 
   async function onUpdatePassword() {
-    try {
-      // dispatch(setLoading());
-      await changePasswordSchema.validate(formData);
-      if (formData.password !== user!.password) throw Error("Nhập sai mật khẩu hiện tại");
-      if (formData.newPassword !== formData.reNewPassword)
-        throw Error("Nhập lại mật khẩu mới chưa đúng");
-      // Update password
+    const result = await dispatch(changePassword(formData.password, formData.newPassword));
+    if (result) {
       navigation.goBack();
-    } catch (err) {
-      const { message } = err as ValidationError;
-      Alert.alert("Thông báo", message);
-    } finally {
-      // dispatch(removeLoading());
     }
   }
 

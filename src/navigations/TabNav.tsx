@@ -11,6 +11,7 @@ import Setting from "../screens/main/Setting/Setting";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
+import Contact from "../screens/main/Contact/Contact";
 
 const Tab = createBottomTabNavigator<BottomTabsParams>();
 
@@ -91,6 +92,20 @@ const TabNav = () => {
           headerTitleStyle: { fontSize: 20 },
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="notifications-outline" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Contact"
+        component={Contact}
+        options={{
+          headerShown: true,
+          headerStyle: { backgroundColor: colors.coolGray[700] },
+          headerTintColor: "white",
+          title: "Về chúng tôi",
+          headerTitleStyle: { fontSize: 20 },
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="information-circle-outline" color={color} size={size} />
           ),
         }}
       />

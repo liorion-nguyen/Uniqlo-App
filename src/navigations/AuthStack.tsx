@@ -5,10 +5,8 @@ import SignUp from "../screens/auth/SignUp";
 import { AuthStackParams } from "./config";
 import ForgotPassword from "../screens/auth/ForgotPassword";
 import OTPInput from "../screens/auth/OTPInput";
-import ResetPassword from "../screens/auth/ResetPassword";
 import { useTheme } from "native-base";
 import { createStackNavigator } from "@react-navigation/stack";
-import FillProfile from "../screens/auth/FillProfile";
 const Stack = createStackNavigator<AuthStackParams>();
 
 const AuthStack = () => {
@@ -28,14 +26,6 @@ const AuthStack = () => {
       <Stack.Screen name="SignUp" component={SignUp} />
       <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
       <Stack.Screen name="OTPInput" component={OTPInput} />
-      <Stack.Screen
-        name="ResetPassword"
-        component={ResetPassword}
-        options={{
-          headerShown: true,
-          title: "Đặt lại mật khẩu",
-        }}
-      />
     </Stack.Navigator>
   );
 };

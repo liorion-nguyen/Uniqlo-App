@@ -6,12 +6,10 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import React, { useState } from "react";
-import { Column, Divider, Heading, Row, Text } from "native-base";
+import { Column, Divider, Heading, Row } from "native-base";
 import FormInput from "../../components/Form/FormInput";
 import FormButton from "../../components/Form/FormButton";
 import GenderSelect from "../../components/Form/GenderSelect";
-// import { useAppDispatch, useAppSelector } from '../../redux/store';
-// import { setUser } from '../../redux/slices/user';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParams } from '../../navigations/config';
 import { fillProfileSchema, onInputChange } from '../../utils/form';
@@ -20,69 +18,53 @@ import LoadingOverlay from '../../components/LoadingOverlay';
 import { ValidationError } from 'yup';
 import moment from 'moment';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { RootState, useSelector } from "../../redux/store";
+import { dispatch, RootState, useSelector } from "../../redux/store";
+import { updateUser } from "../../redux/slices/user";
+import { EGender } from "../../types/redux/user";
 
 type Props = {} & StackScreenProps<RootStackParams, 'FillProfile'>;
 
 type ProfileForm = {
-  fullname: string;
-  birthday: Date;
+  fullName: string;
+  dateOfBirth: Date;
   gender: string;
   email: string;
 };
 
-const FillProfile = ({ navigation, route }: Props) => {
-  // const dispatch = useAppDispatch();
+const FillProfile = ({ navigation }: Props) => {
   const { user } = useSelector((state: RootState) => state.user);
-  console.log(user);
   const editMode = !!user;
-  // const { isLoading } = useAppSelector((state) => state.loading);
   const isLoading = false;
   const title = editMode ? 'Cập nhật thông tin' : 'Điền thông tin';
 
   const [formData, setFormData] = useState<ProfileForm>({
-    fullname: editMode ? user.fullName : '',
-    birthday: editMode && user.dateOfBirth ? new Date(user.dateOfBirth) : new Date(),
+    fullName: editMode ? user.fullName : '',
+    dateOfBirth: editMode && user.dateOfBirth ? new Date(user.dateOfBirth) : new Date(),
     gender: editMode ? user.gender : 'Male',
     email: editMode ? user.email : '',
   });
 
   async function onSignUp() {
-    const { password, phone } = route.params!;
-    // dispatch(setLoading());
     try {
       await fillProfileSchema.validate(formData);
-      if (moment(new Date()).diff(formData.birthday, "y") < 16) {
+      if (moment(new Date()).diff(formData.dateOfBirth, "y") < 16) {
         throw Error("Bạn chưa đủ tuổi dùng ứng dụng");
       }
-      // Handle Change Password
-      // dispatch(setUser({
-      //   phone,
-      //   password,
-      //   ...formData,
-      //   role: EUserRole.Member,
-      //   birthday: formData.birthday.toISOString(),
-      // }));
       navigation.navigate('TabNav');
     } catch (err) {
       const { message } = err as ValidationError;
       Alert.alert("Thông báo", message);
-    } finally {
-      // dispatch(removeLoading());
     }
   }
 
   async function onUpdateProflie() {
-    try {
-      // dispatch(setLoading());
-      // handle update profile
-      Alert.alert('Thông báo', 'Cập nhật thông tin thành công');
-    } catch (err) {
-      const { message } = err as ValidationError;
-      Alert.alert("Thông báo", message);
-    } finally {
-      // dispatch(removeLoading());
-    }
+    if (user) {
+      await dispatch(updateUser(user._id, {
+        ...formData,
+        ...user
+      }));
+      navigation.navigate('TabNav');
+    };
   }
 
   function onFilled() {
@@ -109,15 +91,15 @@ const FillProfile = ({ navigation, route }: Props) => {
             <FormInput
               label="Tên"
               placeholder="Nhập tên"
-              value={formData.fullname}
-              onChangeText={onInputChange<ProfileForm>("fullname", setFormData, formData)}
+              value={formData.fullName}
+              onChangeText={onInputChange<ProfileForm>("fullName", setFormData, formData)}
             />
             <FormDatePicker
-              value={formData.birthday}
-              onChange={onInputChange<ProfileForm>("birthday", setFormData, formData)}
+              value={formData.dateOfBirth}
+              onChange={onInputChange<ProfileForm>("dateOfBirth", setFormData, formData)}
             />
             <GenderSelect
-              selected={formData.gender}
+              selected={formData.gender as EGender}
               onChange={onInputChange<ProfileForm>("gender", setFormData, formData)}
             />
             <FormInput

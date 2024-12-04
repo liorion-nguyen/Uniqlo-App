@@ -6,8 +6,8 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 type GenderButtonProps = { active?: boolean; iconName: string } & IButtonProps;
 
 export enum EGender {
-  M,
-  F,
+  Male = "Male",
+  Female = "Female",
 }
 
 const GenderButton = ({ active, iconName, children, ...buttonProps }: GenderButtonProps) => (
@@ -39,20 +39,20 @@ const GenderSelect = ({ onChange, selected }: Props) => {
       <Row bg="coolGray.600" rounded="full">
         <GenderButton
           iconName="male"
-          active={gender === EGender.M}
+          active={gender === EGender.Male}
           onPress={() => {
-            setGender(EGender.M);
-            onChange(EGender.M);
+            setGender(EGender.Male);
+            onChange(EGender.Male);
           }}
         >
           Nam
         </GenderButton>
         <GenderButton
           iconName="female"
-          active={gender === EGender.F}
+          active={gender === EGender.Female}
           onPress={() => {
-            setGender(EGender.F);
-            onChange(EGender.F);
+            setGender(EGender.Female);
+            onChange(EGender.Female);
           }}
         >
           Nữ

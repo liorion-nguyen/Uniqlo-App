@@ -1,32 +1,38 @@
 export type UserState = {
-    loading: boolean;
-    user: UserType | null;
-    errorMessage: string | null;
+  loading: boolean;
+  user: UserType | null;
+  errorMessage: string | null;
 };
 
 export enum EGender {
-    Male = "Male",
-    Female = "Female",
+  Male = "Male",
+  Female = "Female",
 }
 
+export type Phone = {
+  countryCode: string;
+  number: string;
+};
+
+export type Address = {
+  province: string;
+  district: string;
+  ward: string;
+};
+
 export type UserType = {
-    authorities: string[];
-    avatar: string | null;
-    createdDate: string;
-    email: string;
-    fullName: string;
-    _id: string;
-    nationality: string | null;
-    dateOfBirth: string | null;
-    updatedDate: string;
-    gender: EGender;
-    phone: {
-        country: string;
-        number: string;
-    };
-    address: {
-        province: string;
-        district: string;
-        ward: string;
-    };
+  _id: string;
+  email: string;
+  password: string;
+  phone: Phone;
+  fullName: string;
+  dateOfBirth: Date;
+  address: Address;
+  deviceTokens: string[];
+  advice: string;
+  status: string;
+  role: string;
+  gender: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
