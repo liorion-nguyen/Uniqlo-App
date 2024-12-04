@@ -1,10 +1,8 @@
 import React from 'react';
-import { Box, ScrollView, VStack, HStack, Image, Text, Button, Link, Heading } from 'native-base';
-import { useNavigation } from '@react-navigation/native';
+import { Box, ScrollView, VStack, Image, Text, Button, Heading } from 'native-base';
+import Members from './members';
 
 const Contact = () => {
-  const navigation = useNavigation();
-
   const team = [
     {
       name: 'Chung',
@@ -112,27 +110,7 @@ const Contact = () => {
         <Heading size="lg" mb={4} textAlign="center">
           Nhóm chúng tôi
         </Heading>
-        <VStack space={4}>
-          {team.map((member, index) => (
-            <Box key={index} bg="white" shadow={2} borderRadius="lg" p={4} alignItems="center">
-              <Link href={member.link} isExternal>
-                <Image
-                  source={member.image}
-                  alt={member.name}
-                  size="xl"
-                  borderRadius="full"
-                  mb={4}
-                />
-              </Link>
-              <Text fontWeight="bold" fontSize="lg">
-                {member.name}
-              </Text>
-              <Text textAlign="center" color="gray.600">
-                {member.description}
-              </Text>
-            </Box>
-          ))}
-        </VStack>
+        <Members data={team} />
       </Box>
 
       {/* Section: Contact */}
