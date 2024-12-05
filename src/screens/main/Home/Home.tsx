@@ -10,13 +10,15 @@ import { dispatch } from "../../../redux/store";
 import { getCategory } from "../../../redux/slices/category";
 import FlashSale from "../../../components/Main/Home/flashSalse";
 import { getProducts } from "../../../redux/slices/product";
+import ListCategories from "../../../components/Main/Home/listCategories";
+import Product from "../../../components/Main/Home/product";
 type Props = {} & StackScreenProps<HomeStackParams, "Home">;
 
 const Home = ({ navigation }: Props) => {
   const data = [
-    { title: 'Slide 1', image: 'https://via.placeholder.com/300' },
-    { title: 'Slide 2', image: 'https://via.placeholder.com/300' },
-    { title: 'Slide 3', image: 'https://via.placeholder.com/300' },
+    { title: 'Slide 1', image: 'https://uniqlo-staging.vercel.app/assets/banner-3-D92opz_J.jpg' },
+    { title: 'Slide 2', image: 'https://uniqlo-staging.vercel.app/assets/banner-2-nlONFt-e.jpg' },
+    { title: 'Slide 3', image: 'https://uniqlo-staging.vercel.app/assets/banner-1-B0fCuvpl.jpg' },
   ];  
   useEffect(() => {
     const fetchCategory = async () => {
@@ -26,12 +28,14 @@ const Home = ({ navigation }: Props) => {
     fetchCategory();
   }, []);
   return (
-    <Column flex="1" bg="coolGray.700" safeAreaTop style={{ padding: 20 }}>
-      <ScrollView flexGrow={1} style={{ flexDirection: "column", gap: 20 }}>
+    <Column flex="1" bg="coolGray.700" safeAreaTop style={styles.container}>
+      <ScrollView flexGrow={1} style={styles.scrollView}>
         <Header />
         <Slider data={data} />
-        <Category />
+        <ListCategories />
         <FlashSale />
+        <Category />
+        <Product />
       </ScrollView>
     </Column>
   );
@@ -39,4 +43,12 @@ const Home = ({ navigation }: Props) => {
 
 export default Home;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    padding: 20
+  },
+  scrollView: {
+    flexDirection: "column",
+    gap: 30
+  }
+});

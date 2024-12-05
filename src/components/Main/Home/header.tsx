@@ -1,33 +1,27 @@
-import { Box, HStack, Icon, Input, Stack, Text } from "native-base";
+import { Box, Icon, Input, Stack, Text } from "native-base";
 import { MaterialIcons } from '@expo/vector-icons';
 import { StyleSheet } from "react-native";
-import { useState } from "react";
 
 export default function Header() {
-  const [isFilterVisible, setFilterVisible] = useState(false);
-
   return (
     <Stack style={style.container}>
       <Box style={style.search}>
         <Input w={{
-          base: "75%",
+          base: "80%",
           md: "25%",
         }}
           variant="rounded"
           InputLeftElement={
             <Icon as={<MaterialIcons name="search" />} size={5} ml="2" color="muted.400" />
           }
+          InputRightElement={
+            <Icon as={<MaterialIcons name="camera-enhance" />} size={5} mr="2" color="muted.400" />
+          }
           placeholder="Search"
         />
-        <Box style={style.icon} onTouchEnd={() => setFilterVisible(!isFilterVisible)}>
-          <Icon as={<MaterialIcons name="filter-list" />} size={5} color="white" />
-        </Box>
+        <Icon as={<MaterialIcons name="shopping-cart" />} size={5} ml="2" color="muted.400" />
+        <Icon as={<MaterialIcons name="messenger" />} size={5} ml="2" color="muted.400" />
       </Box>
-
-      {isFilterVisible && (
-        <Input placeholder="Filter..." />
-      )}
-
     </Stack>
   );
 }
@@ -37,12 +31,14 @@ const style = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     flex: 1,
-    gap: 10
+    gap: 10,
+    marginBottom: 10  
   },
   search: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 10
+    justifyContent: "space-between",
+    width: "100%"
   },
   icon: {
     backgroundColor: "#704f37",
