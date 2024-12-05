@@ -1,14 +1,19 @@
-import React, { useEffect } from "react";
-import { View, Text, StyleSheet, ScrollView, Image } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, StyleSheet, ScrollView, Image, SafeAreaView, TouchableOpacity } from "react-native";
 import { useSelector } from "react-redux";
 import { dispatch, RootState } from "../../../redux/store";
 import { getProduct } from "../../../redux/slices/product";
 import { Box, Icon, Badge } from "native-base";
 import { MaterialIcons } from "@expo/vector-icons";
+import MenuBuy from "../../../components/Common/menuBuy";
+import toast from 'react-native-toast-message';
+import RecommendedProducts from "../../../components/Common/recommendedProducts";
+import { productsData } from "../../../dataFake/product";
 
 export default function ProductDetail({ route }: { route: any }) {
     const { productId } = route.params;
     const { product } = useSelector((state: RootState) => state.products);
+    const [isFavorite, setIsFavorite] = useState(false);
 
     useEffect(() => {
         dispatch(getProduct(productId));
@@ -22,69 +27,115 @@ export default function ProductDetail({ route }: { route: any }) {
         );
     }
 
+    const formatProductCount = (count: number): string => {
+        if (count < 1000) {
+            return count.toString();
+        } else if (count < 1000000) {
+            return (count / 1000).toFixed(1) + 'k'; // Ví dụ: 835.8k
+        } else {
+            return (count / 1000000).toFixed(1) + 'm'; // Ví dụ: 1.2m
+        }
+    };
+
+    const handleFavorite = () => {
+        if (isFavorite) {
+            // dispatch(removeFavorite(productId));
+            toast.show({
+                text1: "Xóa khỏi danh sách yêu thích",
+                type: "success",
+            });
+        } else {
+            // dispatch(addFavorite(productId));
+            toast.show({
+                text1: "Thêm vào danh sách yêu thích",
+                type: "success",
+            });
+        }
+        setIsFavorite(!isFavorite);
+    };
+
     return (
-        <ScrollView style={styles.container}>
-            {/* Product Images */}
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.imageSlider}>
-                {product.Product_images.map((image: string, index: number) => (
-                    <Image key={index} source={{ uri: image }} style={styles.productImage} />
-                ))}
+        <SafeAreaView style={styles.safeArea}>
+            <MenuBuy />
+            <ScrollView style={styles.container}>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.imageSlider}>
+                    {product.Product_images.map((image: string, index: number) => (
+                        <Image key={index} source={{ uri: image }} style={styles.productImage} />
+                    ))}
+                </ScrollView>
+
+                <Box style={styles.productInfo}>
+                    <View style={styles.productNameContainer}>
+                        <View>
+                            <Text style={styles.productName}>{product.Product_name}</Text>
+                            <Text style={styles.productPrice}>{product.Product_price.toLocaleString()} VNĐ</Text>
+                        </View>
+                        <View style={styles.productSoldContainer}>
+                            <Text style={styles.productSold}>Đã bán {formatProductCount(product.Product_count)} sản phẩm</Text>
+                            <TouchableOpacity onPress={handleFavorite}>
+                                {
+                                    isFavorite ?
+                                        <Icon as={<MaterialIcons name="favorite" />} size={4} color="red.500" />
+                                        :
+                                        <Icon as={<MaterialIcons name="favorite-outline" />} size={4} color="gray.500" />
+                                }
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+
+                    <View style={styles.badgesContainer}>
+                        {product.Product_isNewArrival && <Badge style={styles.badgeNew}>New Arrival</Badge>}
+                        {product.Product_isOnSale && <Badge style={styles.badgeSale}>On Sale</Badge>}
+                        {product.Product_isBestSeller && <Badge style={styles.badgeBestSeller}>Best Seller</Badge>}
+                    </View>
+
+                    <View style={styles.ratingContainer}>
+                        <Text style={styles.ratingText}>{product.Product_rating} </Text>
+                        <Icon as={<MaterialIcons name="star" />} size={5} color="yellow.500" />
+                        <Text style={styles.desRatingText}>Đánh giá sản phẩm (100)</Text>
+                    </View>
+
+                    <Text style={styles.sectionTitle}>Description</Text>
+                    <Text style={styles.productDescription}>{product.Product_description}</Text>
+
+                    <Text style={styles.sectionTitle}>Specifications</Text>
+                    <Text style={styles.productSpecifications}>{product.Product_specifications}</Text>
+                </Box>
+                <Box style={{ padding: 10, gap: 10 }}>
+                    <Box style={styles.title}>
+                        <View style={styles.line}></View>
+                        <Text>Có thể bạn cũng thích</Text>
+                        <View style={styles.line}></View>
+                    </Box>
+                    <RecommendedProducts productsProps={productsData} />
+                </Box>
             </ScrollView>
-
-            {/* Product Info */}
-            <Box style={styles.productInfo}>
-                <Text style={styles.productName}>{product.Product_name}</Text>
-                <Text style={styles.productPrice}>${product.Product_price.toFixed(2)}</Text>
-
-                {/* Badges */}
-                <View style={styles.badgesContainer}>
-                    {product.Product_isNewArrival && <Badge style={styles.badgeNew}>New Arrival</Badge>}
-                    {product.Product_isOnSale && <Badge style={styles.badgeSale}>On Sale</Badge>}
-                    {product.Product_isBestSeller && <Badge style={styles.badgeBestSeller}>Best Seller</Badge>}
-                </View>
-
-                {/* Product Rating */}
-                <View style={styles.ratingContainer}>
-                    <Icon as={<MaterialIcons name="star" />} size={5} color="yellow.500" />
-                    <Text style={styles.ratingText}>{product.Product_rating} / 5.0</Text>
-                </View>
-
-                {/* Product Description */}
-                <Text style={styles.sectionTitle}>Description</Text>
-                <Text style={styles.productDescription}>{product.Product_description}</Text>
-
-                {/* Product Specifications */}
-                <Text style={styles.sectionTitle}>Specifications</Text>
-                <Text style={styles.productSpecifications}>{product.Product_specifications}</Text>
-
-                {/* Product Details */}
-                <View style={styles.detailsContainer}>
-                    <Text style={styles.detailText}>
-                        <Text style={styles.detailLabel}>Color: </Text>
-                        {product.Product_color}
-                    </Text>
-                    <Text style={styles.detailText}>
-                        <Text style={styles.detailLabel}>Size: </Text>
-                        {product.Product_size}
-                    </Text>
-                    <Text style={styles.detailText}>
-                        <Text style={styles.detailLabel}>Stock: </Text>
-                        {product.Product_count}
-                    </Text>
-                    <Text style={styles.detailText}>
-                        <Text style={styles.detailLabel}>SKU: </Text>
-                        {product.Product_sku}
-                    </Text>
-                </View>
-            </Box>
-        </ScrollView>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
+    safeArea: {
+        flex: 1,
+        backgroundColor: "transparent",
+    },
     container: {
         flex: 1,
         backgroundColor: "#fff",
+    },
+    productNameContainer: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+    },
+    productSoldContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 5
+    },
+    productSold: {
+        fontSize: 12,
+        color: "#666",
     },
     loadingContainer: {
         flex: 1,
@@ -139,12 +190,15 @@ const styles = StyleSheet.create({
     ratingContainer: {
         flexDirection: "row",
         alignItems: "center",
-        marginVertical: 8,
+        gap: 4
     },
     ratingText: {
         fontSize: 16,
         fontWeight: "500",
         marginLeft: 8,
+    },
+    desRatingText: {
+        fontSize: 12,
     },
     sectionTitle: {
         fontSize: 18,
@@ -161,15 +215,15 @@ const styles = StyleSheet.create({
         color: "#666",
         marginBottom: 16,
     },
-    detailsContainer: {
-        marginVertical: 16,
+    line: {
+        width: 30,
+        height: 1,
+        backgroundColor: "#ccc",
     },
-    detailText: {
-        fontSize: 14,
-        color: "#333",
-        marginBottom: 8,
-    },
-    detailLabel: {
-        fontWeight: "bold",
+    title: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: 4,
     },
 });

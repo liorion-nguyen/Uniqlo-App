@@ -2,70 +2,35 @@ import { StyleSheet } from "react-native";
 import React from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Avatar, Center, Column, Heading, Icon, Row, Text } from "native-base";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { INotification } from "../../types/notification";
 import moment from "moment";
-
-type Props = {
-  data: INotification;
-};
-
-export enum EGender {
-  M,
-  F,
-}
-
-export enum EUserRole {
-  Doctor,
-  Member,
-}
-
-interface IUserProfile {
-  phone: string;
-  password: string;
-  birthday: string;
-  fullname: string;
-  gender: EGender;
-  email: string;
-  role: EUserRole;
-  avatarUrl?: string;
-  avatarName?: string;
-
-  // For Doctor
-  degree?: string;
-  position?: string;
-  intro?: string[];
-  expertises?: string[];
-  services?: string[];
-}
-
-const NotificationItem = ({ data }: Props) => {
-  const fromUser = data.fromUser as IUserProfile;
+import { MaterialIcons } from '@expo/vector-icons';
+const NotificationItem = ({ data }: { data: any }) => {
+  const fromUser = data.fromUser;
   return (
     <TouchableOpacity>
       <Row space="4" py="3">
-        {(data.fromUser as IUserProfile).avatarUrl ? (
+        {fromUser.avatarUrl ? (
           <Avatar w="16" h="16" source={{ uri: fromUser.avatarUrl }} />
         ) : (
           <Center bg="white" rounded="full" w="16" h="16">
-            <Ionicons name="person-outline" color="gray" size={32} />
+            <Icon as={MaterialIcons} name="person" color="gray" size={19} />
           </Center>
         )}
-        <Column justifyContent="center" space="1">
-          <Column>
+        <Column justifyContent="center" space="1" flex="1">
+          <Column flex="1">
             <Row alignItems="center" space="2">
               <Heading fontSize="md" color="white">
                 {fromUser.fullname}
               </Heading>
-              {fromUser.role === EUserRole.Doctor && (
-                <Icon as={Ionicons} name="checkmark-circle" color="primary.600" size="md" />
+              {fromUser.role === "System" && (
+                <Icon as={MaterialIcons} name="check-circle" color="primary.600" size="md" />
               )}
             </Row>
-            <Text color="white">{data.content}</Text>
+            <Text color="white" style={styles.content}>{data.content}</Text>
           </Column>
           <Row alignItems="center" space="1">
-            {/* <Icon color="coolGray.500" as={Ionicons} name="time-outline" /> */}
-            <Text color="coolGray.500">{moment(data.createdAt.toDate()).format("DD-MM-YYYY")}</Text>
+            <Icon color="coolGray.500" as={MaterialIcons} name="access-time" />
+            <Text color="coolGray.500">{String(data.createdAt)}</Text>
           </Row>
         </Column>
       </Row>
@@ -75,4 +40,10 @@ const NotificationItem = ({ data }: Props) => {
 
 export default NotificationItem;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  content: {
+    fontSize: 14,
+    lineHeight: 20,
+    flex: 1
+  },
+});

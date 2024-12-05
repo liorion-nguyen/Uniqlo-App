@@ -35,4 +35,5 @@ export type UserType = {
   gender: string;
   createdAt?: Date;
   updatedAt?: Date;
+  avatar?: string;
 };

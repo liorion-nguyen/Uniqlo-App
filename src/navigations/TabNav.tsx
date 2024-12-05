@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 import React, { useEffect } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Notification from "../screens/main/Setting/Notification";
+import Notification from "../screens/main/Notification/Notification";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useTheme } from "native-base";
 import HomeStack from "./HomeStack";
@@ -9,8 +9,6 @@ import { BottomTabsParams } from "./config";
 import Setting from "../screens/main/Setting/Setting";
   import * as Notifications from "expo-notifications";
 import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
-import { RootState } from "../redux/store";
 import Contact from "../screens/main/Contact/Contact";
 
 const Tab = createBottomTabNavigator<BottomTabsParams>();
@@ -27,22 +25,6 @@ Notifications.setNotificationHandler({
 
 const TabNav = () => {
   const { colors } = useTheme();
-
-  const dispatch = useDispatch();
-  function scheduleNotificationHandler() {
-    Notifications.scheduleNotificationAsync({
-      content: {
-        title: "Bạn có thông báo mới",
-        body: "Hãy vào xem",
-        data: {
-          username: "tuanna",
-        },
-      },
-      trigger: {
-        seconds: 0.2,
-      },
-    });
-  }
 
   useEffect(() => {
     const subcribe1 = Notifications.addNotificationReceivedListener((noti) => {
