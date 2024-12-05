@@ -25,8 +25,6 @@ type Props = CompositeScreenProps<
 
 const Setting = ({ navigation }: Props) => {
   const { user } = useSelector((state: RootState) => state.user);
-  // const { isLoading } = useAppSelector((state) => state.loading);
-  // const dispatch = useAppDispatch();
   const isLoading = false;  
   const [image, setImage] = useState<string | null>(user?.avatar || null);
 
@@ -40,9 +38,8 @@ const Setting = ({ navigation }: Props) => {
     if (!result.canceled) {
       try {
         const imageUri = result.assets[0].uri;
-        // dispatch(setLoading());
         const { imageName, imageUrl } = await uploadImage(imageUri);
-          if (user?.avatar) {
+        if (user?.avatar) {
           // Delete old image from storage
         }
         // Update image to storage
@@ -50,9 +47,7 @@ const Setting = ({ navigation }: Props) => {
         setImage(imageUrl);
       } catch (err) {
         Alert.alert("Thông báo", (err as any).message);
-      } finally {
-        // dispatch(removeLoading());
-      }
+      } 
     }
   };
 
@@ -62,18 +57,6 @@ const Setting = ({ navigation }: Props) => {
         <LoadingOverlay />
       </Column>
     );
-    const handleEmailPress = () => {
-      Linking.openURL("mailto:hotlinengaymai@gmail.com");
-    };
-  
-    const handlePhonePress = () => {
-      Linking.openURL("tel:0963061414");
-    };
-  
-    const handleMapPress = () => {
-      // Replace with the actual map URL or coordinate
-      Linking.openURL("https://www.google.com/maps/place/Hà+Nội,+Việt+Nam");
-    };
   return (
     <>
       <Column flex="1" bg="coolGray.700" px="5">

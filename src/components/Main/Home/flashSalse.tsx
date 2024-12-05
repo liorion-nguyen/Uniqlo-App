@@ -19,7 +19,7 @@ export default function FlashSale() {
         {
             id: 2,
             name: "Áo thun",
-            price: 100000,
+            price: 120000,
             discount: 22,
             image: "https://uniqlo-staging.vercel.app/assets/product-5-C7TiPTAm.jpg",
             totalSold: 60

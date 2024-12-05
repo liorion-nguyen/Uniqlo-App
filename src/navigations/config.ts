@@ -19,6 +19,11 @@ export type HomeStackParams = {
   ProductDetail: {
     productId: string;
   };
+  Cart: undefined;
+  Message: undefined;
+  MessageDetail: {
+    id: string;
+  };
 };
 
 export type RootStackParams = {

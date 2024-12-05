@@ -1,11 +1,14 @@
 import { Box, Icon, Text } from "native-base";
 import { Image, StyleSheet, TouchableOpacity } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
-import { useNavigation } from "@react-navigation/native";
+import { ProductType } from "../../types/redux/product";
 
-export default function Card({ product }: { product: any }) {
-    const navigation = useNavigation();
+type CardProps = {
+    product: ProductType;
+    navigation: any; 
+};
 
+export default function Card({ product, navigation }: CardProps) {
     const handleOpenDetail = () => {
         navigation.navigate('ProductDetail', { productId: product.id });
     };
@@ -45,7 +48,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 4,
         elevation: 3,
-        width: 180
+        flex: 1,
     },
     imageContainer: {
         position: 'relative',
@@ -80,7 +83,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     productName: {
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: '600',
         color: '#333',
         flex: 1,

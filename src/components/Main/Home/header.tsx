@@ -1,8 +1,11 @@
-import { Box, Icon, Input, Stack, Text } from "native-base";
+import { Box, Icon, Input, Stack, useTheme } from "native-base";
 import { MaterialIcons } from '@expo/vector-icons';
 import { StyleSheet } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 export default function Header() {
+  const navigation = useNavigation(); 
+  const { colors } = useTheme();
   return (
     <Stack style={style.container}>
       <Box style={style.search}>
@@ -10,6 +13,7 @@ export default function Header() {
           base: "80%",
           md: "25%",
         }}
+          bg={colors.coolGray[700]}
           variant="rounded"
           InputLeftElement={
             <Icon as={<MaterialIcons name="search" />} size={5} ml="2" color="muted.400" />
@@ -19,8 +23,8 @@ export default function Header() {
           }
           placeholder="Search"
         />
-        <Icon as={<MaterialIcons name="shopping-cart" />} size={5} ml="2" color="muted.400" />
-        <Icon as={<MaterialIcons name="messenger" />} size={5} ml="2" color="muted.400" />
+        <Icon as={<MaterialIcons name="shopping-cart" />} size={5} ml="2" color="muted.400" onPress={() => navigation.navigate('Cart' as never)}/>
+        <Icon as={<MaterialIcons name="messenger" />} size={5} ml="2" color="muted.400" onPress={() => navigation.navigate('Message' as never)}/>
       </Box>
     </Stack>
   );
@@ -32,7 +36,8 @@ const style = StyleSheet.create({
     alignItems: "center",
     flex: 1,
     gap: 10,
-    marginBottom: 10  
+    marginBottom: 10,
+    zIndex: 1000,
   },
   search: {
     flexDirection: "row",

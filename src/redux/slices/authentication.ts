@@ -109,8 +109,6 @@ export const login = (loginData: LoginRequestType) => {
     return async (dispatch: any) => {
         try {
             dispatch(authenticationSlice.actions.loginRequest());
-            console.log(envConfig.serverURL);
-            
             const result = await axios.post(`${envConfig.serverURL}/auth/login`, loginData);
             const data: LoginResponseType = result.data ? result.data.data : null;
             if (data) {
@@ -142,20 +140,32 @@ export const login = (loginData: LoginRequestType) => {
 
 export const logout = () => {
     return async (dispatch: any) => {
-        dispatch(authenticationSlice.actions.logout());
-
-        await axios.post(`${envConfig.serverURL}/auth/logout`, {
-            refresh_token: await AsyncStorage.getItem("refreshToken"),
-        });
-        await AsyncStorage.removeItem("accessToken");
-        await AsyncStorage.removeItem("refreshToken");
-        dispatch(userSlice.actions.logout());
-        toast.show({
-            text1: 'Đăng xuất thành công',
-            type: 'success',
-            position: 'bottom',
-            visibilityTime: 3000,
-        });
+        try {
+            console.log("LOGOUT");
+            dispatch(authenticationSlice.actions.logout());
+            await axios.post(`${envConfig.serverURL}/auth/logout`, {
+                refresh_token: await AsyncStorage.getItem("refreshToken"),
+            });
+            await AsyncStorage.removeItem("accessToken");
+            await AsyncStorage.removeItem("refreshToken");
+            dispatch(userSlice.actions.logout());
+            toast.show({
+                text1: 'Đăng xuất thành công',
+                type: 'success',
+                position: 'bottom',
+                visibilityTime: 3000,
+            });
+        } catch (error: any) {
+            toast.show({
+                text1: 'Đăng xuất thành công',
+                type: 'success',
+                position: 'bottom',
+                visibilityTime: 3000,
+            });
+            await AsyncStorage.removeItem("accessToken");
+            await AsyncStorage.removeItem("refreshToken");
+            dispatch(userSlice.actions.logout());
+        }
     };
 };
 
